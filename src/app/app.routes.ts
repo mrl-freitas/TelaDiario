@@ -3,34 +3,13 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'preliminary-home', // Nome do 'path' da sua página inicial
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
-  },
-
-  {
-    path: 'preliminary-home',
-    loadComponent: () =>
-      import('./preliminary-home/preliminary-home.page').then(
-        (m) => m.PreliminaryHomePage,
-      ),
-  },
-
-  {
-    path: 'home',
-    loadComponent: () =>
-      import('./pages/home/home.page').then((m) => m.HomePage),
-  },
-  {
-    path: 'categories',
-    loadComponent: () =>
-      import('./pages/categories/categories.page').then(
-        (m) => m.CategoriesPage,
-      ),
   },
 
   {
@@ -58,8 +37,13 @@ export const routes: Routes = [
       ),
   },
 
+
   {
-    path: 'group',
-    loadComponent: () => import('./group/group.page').then((m) => m.GroupPage),
+    path: 'settings',
+    loadComponent: () =>
+      import('./profile//settings/settings.component').then(
+        (m) => m.SettingsPage,
+      ),
   },
+ 
 ];
