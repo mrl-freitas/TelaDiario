@@ -1,13 +1,80 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container">
+    <div class="wrapper">
+      <h1>Login</h1>
+      <!-- Título simples -->
+
+      <!-- e-mail -->
+      <ion-item class="email-field-container" fill="underline">
+        <ion-input
+          type="email"
+          placeholder="E-mail"
+          class="login-field-input"
+        ></ion-input>
+      </ion-item>
+
+      <!-- senha -->
+      <ion-item class="senha-field-container" fill="underline">
+        <ion-input
+          class="senha-field-input"
+          type="password"
+          placeholder="Senha"
+          [type]="isPasswordVisible ? 'text' : 'password'"
+        ></ion-input>
+
+        <div class="eye-icon-container" (click)="togglePassword()">
+          @if (isPasswordVisible) {
+          <!-- Ícone: Olho Aberto (True) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="eye-svg"
+          >
+            <!-- Contorno externo do olho -->
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <!-- Círculo da íris -->
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          } @else {
+          <!-- Ícone: Olho Riscado (False) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="eye-svg"
+          >
+            <!-- Contorno do olho -->
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+            />
+
+            <!-- Círculo central (íris) cortado -->
+            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+
+            <!-- O risco (linha diagonal) -->
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+          }
+        </div>
+      </ion-item>
+
+      <ion-button expand="block">INICIAR SESSÃO</ion-button>
+
+      <p routerLink="/forgot-password">Esqueceu a senha ?</p>
+    </div>
+
+    <div class="signup-wrapper">
+      <p class="signup-text">Não possui uma conta ?</p>
+      <a class="signup-link" routerLink="/sign-up">Criar uma conta</a>
+    </div>
+  </div>
 </ion-content>

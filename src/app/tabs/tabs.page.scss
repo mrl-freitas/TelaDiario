@@ -1,1 +1,11 @@
+ion-tab-bar {
+  --background: black;
+}
 
+ion-tab-button {
+  /* Cor quando a aba não está selecionada */
+  --color: #b2b2b2;
+
+  /* Cor quando a aba ESTÁ selecionada ou com o mouse em cima */
+  --color-selected: #ffffff; /* Ou a cor que você preferir */
+}

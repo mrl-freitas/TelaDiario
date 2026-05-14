@@ -1,0 +1,120 @@
+ion-content {
+  --background: black;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 25px;
+}
+
+h1 {
+  color: white;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.email-field-container {
+  --background: none;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  width: 95%;
+
+  .login-field-input {
+    font-size: 14px;
+
+    font-weight: bold;
+    border: solid 1px white;
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+    color: #5d5f5e;
+    --padding-start: 20px;
+  }
+}
+
+.senha-field-container {
+  --background: none;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  width: 95%;
+
+  .senha-field-input {
+    font-size: 14px;
+    font-weight: bold;
+    border: solid 1px white;
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+    color: #5d5f5e;
+    --padding-start: 20px;
+    position: relative;
+  }
+}
+
+ion-button {
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  width: 95%;
+  height: 50px;
+  --border-radius: 30px;
+  --background: white;
+}
+
+.signup-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
+  width: 100%;
+  height: 20%;
+
+  .signup-text {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  .signup-link {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.eye-icon-container {
+  cursor: pointer;
+  position: absolute;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+
+  .eye-svg {
+    width: 22px;
+    height: 22px;
+    color: var(--ion-color-light);
+
+    // Cor quando estiver ativo (olho aberto, senha visível)
+    &[ng-reflect-ng-if="true"] {
+      color: var(--ion-color-primary); // Muda para a cor principal (azul/verde)
+    }
+  }
+}

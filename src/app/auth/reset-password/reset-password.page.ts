@@ -1,20 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonInput,
+  IonButton,
+  IonItem,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.page.html',
   styleUrls: ['./reset-password.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonContent,
+    CommonModule,
+    FormsModule,
+    IonInput,
+    IonButton,
+    IonItem,
+  ],
 })
 export class ResetPasswordPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {}
+  isPasswordVisibleA = false;
+  togglePasswordA() {
+    this.isPasswordVisibleA = !this.isPasswordVisibleA;
   }
 
+  isPasswordVisibleB = false;
+  togglePasswordB() {
+    this.isPasswordVisibleB = !this.isPasswordVisibleB;
+  }
+
+  ngOnInit() {}
 }
