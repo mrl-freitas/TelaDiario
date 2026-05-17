@@ -1,0 +1,124 @@
+ion-content {
+  --background: black;
+}
+
+/*---------------------------------------------------------------------------------------------Banners*/
+
+.container-slides {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+}
+
+.slides-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.slide-item {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+}
+
+.slide-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.nav-buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  bottom: 10px;
+  column-gap: 8px;
+
+  .nav-buttons {
+    background-color: #ffffff80;
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+
+    &.active {
+      background: #ffffff; // Branco quando ativo
+      transform: scale(1.2);
+    }
+  }
+
+  .nav-buttons:hover {
+    background-color: white;
+  }
+}
+
+/*---------------------------------------------------------------------------------------------Banners*/
+
+/*---------------------------------------------------------------------------------------------Category*/
+
+.content-title {
+  p {
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+  }
+}
+
+.content-card {
+  display: flex;
+  column-gap: 10px;
+  margin-left: 5px;
+  overflow-x: auto;
+
+  .item-card {
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    .item-cover {
+      width: 138px;
+      height: 190px;
+
+      .item-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 10px;
+      }
+    }
+
+    .content-name {
+      width: 138px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      .item-name {
+        font-size: 12px;
+        color: white;
+        flex-shrink: 0;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none !important; /* Esconde no Firefox */
+  -ms-overflow-style: none !important; /* Esconde no IE/Edge */
+}
+
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none !important; /* Esconde no Android, iOS e Chrome */
+  width: 0 !important;
+  height: 0 !important;
+}

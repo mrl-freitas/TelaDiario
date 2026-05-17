@@ -1,13 +1,163 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+  <!-- Container dos Slides -->
+  <div class="container-slides">
+    <div
+      class="slides-wrapper"
+      [style.transform]="'translateX(' + (-currentSlide * 100) + '%)'"
+    >
+      <div class="slide-item">
+        <img src="assets/banners/Duna.webp" />
+      </div>
+
+      <div class="slide-item">
+        <img src="assets/banners/Justiceiro.webp" />
+      </div>
+
+      <div class="slide-item">
+        <img src="assets/banners/StrangerThings.webp" />
+      </div>
+    </div>
+
+    <!-- Botões de Navegação -->
+    <div class="nav-buttons-container">
+      <p
+        class="nav-buttons"
+        [class.active]="currentSlide === 0"
+        (click)="goToSlide(0)"
+        fill="clear"
+      ></p>
+      <p
+        class="nav-buttons"
+        [class.active]="currentSlide === 1"
+        (click)="goToSlide(1)"
+        fill="clear"
+      ></p>
+      <p
+        class="nav-buttons"
+        [class.active]="currentSlide === 2"
+        (click)="goToSlide(1)"
+        fill="clear"
+      ></p>
+    </div>
+  </div>
+  <!-- Container dos Slides -->
+
+  <!-- Container dos Filmes -->
+  <div class="container-category">
+    <!-- Filmes 1 -->
+    <div class="content-category">
+      <!-- Título -->
+      <div class="content-title">
+        <p>Filmes mais assistidos</p>
+      </div>
+
+      <!-- Cards -->
+      <div
+        class="content-card"
+        #carrossel1
+        (mousedown)="startDragging($event, carrossel1)"
+        (mouseleave)="stopDragging()"
+        (mouseup)="stopDragging()"
+        (mousemove)="onDragging($event)"
+        (touchstart)="startDragging($event, carrossel1)"
+        (touchend)="stopDragging()"
+        (touchmove)="onDragging($event)"
+      >
+        @for (item of filmes(); track item.titulo) {
+        <!-- Card 1 -->
+        <div class="item-card">
+          <div class="item-cover">
+            <img
+              class="item-img"
+              [src]="item.imagem"
+              [alt]="item.titulo"
+              draggable="false"
+            />
+          </div>
+          <div class="content-name">
+            <p class="item-name">{{ item.titulo }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    <!-- Filmes 2 -->
+    <div class="content-category">
+      <!-- Título -->
+      <div class="content-title">
+        <p>Séries mais asssistidas</p>
+      </div>
+
+      <!-- Cards -->
+      <div
+        class="content-card"
+        #carrossel2
+        (mousedown)="startDragging($event, carrossel2)"
+        (mouseleave)="stopDragging()"
+        (mouseup)="stopDragging()"
+        (mousemove)="onDragging($event)"
+        (touchstart)="startDragging($event, carrossel2)"
+        (touchend)="stopDragging()"
+        (touchmove)="onDragging($event)"
+      >
+        <!-- Card -->
+        @for (item of series(); track item.titulo) {
+        <!-- Card 1 -->
+        <div class="item-card">
+          <div class="item-cover">
+            <img
+              class="item-img"
+              [src]="item.imagem"
+              [alt]="item.titulo"
+              draggable="false"
+            />
+          </div>
+          <div class="content-name">
+            <p class="item-name">{{ item.titulo }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Filmes 3 -->
+    <div class="content-category">
+      <!-- Título -->
+      <div class="content-title">
+        <p>Animes mais assistidos</p>
+      </div>
+
+      <!-- Cards -->
+      <div
+        class="content-card"
+        #carrossel3
+        (mousedown)="startDragging($event, carrossel3)"
+        (mouseleave)="stopDragging()"
+        (mouseup)="stopDragging()"
+        (mousemove)="onDragging($event)"
+        (touchstart)="startDragging($event, carrossel3)"
+        (touchend)="stopDragging()"
+        (touchmove)="onDragging($event)"
+      >
+        <!-- Card== -->
+        @for (item of animes(); track item.titulo) {
+        <div class="item-card">
+          <div class="item-cover">
+            <img
+              class="item-img"
+              [src]="item.imagem"
+              [alt]="item.titulo"
+              draggable="false"
+            />
+          </div>
+          <div class="content-name">
+            <p class="item-name">{{ item.titulo }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <!-- Container dos Filmes -->
+  ></ion-content
+>
