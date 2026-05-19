@@ -36,6 +36,13 @@ export const routes: Routes = [
         (m) => m.ResetPasswordPage,
       ),
   },
+  {
+    path: 'movie-details',
+    loadComponent: () =>
+      import('./movie-details/movie-details.page').then(
+        (m) => m.MovieDetailsPage,
+      ),
+  },
 
   {
     path: 'settings',

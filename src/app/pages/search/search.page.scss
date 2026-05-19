@@ -1,0 +1,91 @@
+ion-header {
+  background: #000;
+}
+
+ion-toolbar {
+  --background: #000;
+  --color: #fff;
+  --border-color: rgba(255, 255, 255, 0.12);
+}
+
+ion-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.botao-voltar {
+  --color: #7b7b7b;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.botao-voltar span {
+  color: #7b7b7b;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+ion-content {
+  --background: #000;
+}
+
+ion-searchbar {
+  --background: #111;
+  --color: #fff;
+  --placeholder-color: #bdbdbd;
+  --icon-color: #bdbdbd;
+  --clear-button-color: #bdbdbd;
+  padding: 10px 12px 4px;
+}
+
+.grade-filmes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 12px;
+  row-gap: 22px;
+  padding: 10px 12px 24px;
+}
+
+.cartao-filme {
+  min-width: 0;
+  cursor: pointer;
+}
+
+.poster-container {
+  position: relative;
+}
+
+.poster-filme {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  display: block;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.marcado-assistir {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+.cartao-filme h3 {
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

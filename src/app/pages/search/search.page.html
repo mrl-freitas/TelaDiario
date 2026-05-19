@@ -1,13 +1,46 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>search</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" class="botao-voltar" (click)="voltar()">
+        <span aria-hidden="true">&lt;</span>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Voltar</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">search</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-searchbar
+    [(ngModel)]="termoBusca"
+    (ionInput)="buscarFilmes()"
+    placeholder="Pesquisar filmes">
+  </ion-searchbar>
+
+  <div class="grade-filmes">
+    <div
+      class="cartao-filme"
+      *ngFor="let filme of filmes"
+      role="button"
+      tabindex="0"
+      (click)="abrirDetalhes(filme)"
+      (keydown.enter)="abrirDetalhes(filme)">
+
+      <div class="poster-container">
+        <img
+          class="poster-filme"
+          [src]="filme.poster_path ? 'https://image.tmdb.org/t/p/w500' + filme.poster_path : 'assets/banners/Duna.webp'"
+          [alt]="filme.title">
+
+        <span
+          class="marcado-assistir"
+          *ngIf="estaMarcadoParaAssistir(filme)"
+          aria-label="Marcado para assistir">
+          &#10003;
+        </span>
+      </div>
+
+      <h3>{{ filme.title }}</h3>
+    </div>
+  </div>
 </ion-content>

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { SearchPage } from './search.page';
+import { MovieDetailsPage } from './movie-details.page';
 
-describe('SearchPage', () => {
-  let component: SearchPage;
-  let fixture: ComponentFixture<SearchPage>;
+describe('MovieDetailsPage', () => {
+  let component: MovieDetailsPage;
+  let fixture: ComponentFixture<MovieDetailsPage>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient()],
     });
-    fixture = TestBed.createComponent(SearchPage);
+    fixture = TestBed.createComponent(MovieDetailsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

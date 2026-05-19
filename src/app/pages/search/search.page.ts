@@ -1,20 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+import { MovieService } from '../../services/movie';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
-export class SearchPage implements OnInit {
+export class SearchPage {
+  termoBusca = this.servicoFilmes.termoBusca;
+  filmes: any[] = this.servicoFilmes.filmes;
 
-  constructor() { }
+  constructor(
+    private servicoFilmes: MovieService,
+    private localizacao: Location,
+    private roteador: Router
+  ) {}
 
-  ngOnInit() {
+  voltar() {
+    this.localizacao.back();
   }
 
+  buscarFilmes() {
+    this.servicoFilmes.termoBusca = this.termoBusca;
+
+    if (!this.termoBusca.trim()) {
+      this.filmes = [];
+      this.servicoFilmes.filmes = [];
+      return;
+    }
+
+    this.servicoFilmes.searchMovies(this.termoBusca).subscribe((resposta: any) => {
+      this.filmes = resposta.results;
+      this.servicoFilmes.filmes = resposta.results;
+    });
+  }
+
+  estaMarcadoParaAssistir(filme: any) {
+    return this.servicoFilmes.estaMarcadoParaAssistir(filme);
+  }
+
+  abrirDetalhes(filme: any) {
+    this.roteador.navigate(['/movie-details'], {
+      state: { filme }
+    });
+  }
 }
