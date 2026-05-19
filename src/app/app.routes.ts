@@ -42,4 +42,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./profile//settings/settings.page').then((m) => m.SettingsPage),
   },
+  {
+    path: 'genres',
+    loadComponent: () => import('./pages/genres/genres.page').then( m => m.GenresPage)
+  },
 ];
