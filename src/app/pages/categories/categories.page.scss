@@ -8,51 +8,12 @@ ion-content {
   --background: black;
 }
 
-/*---------------------------------------------------------------------------------------------Voltar*/
-
-.container-back-button {
-  display: grid;
-  grid-template-columns: minmax(24px, 10px) 1fr minmax(24px, 10px);
-
-  .content-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .back-button-svg-wrapper {
-    left: 0px;
-    position: absolute;
-    height: 33px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .back-button-text-wrapper {
-    width: 100%;
-    height: 33px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #ffffff33;
-
-    .back-button-text {
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-    }
-  }
-}
-
-/*---------------------------------------------------------------------------------------------Voltar*/
-
 /*---------------------------------------------------------------------------------------------Generos*/
 
 .container-categories {
   display: grid;
-  grid-template-columns: minmax(24px, 10px) 1fr minmax(24px, 10px);
+  grid-template-columns: minmax(20px, 10px) 1fr minmax(20px, 10px);
+  padding-top: env(safe-area-inset-top);
 }
 
 .content-wrapper-categories {
@@ -60,7 +21,7 @@ ion-content {
   grid-template-columns: repeat(2, minmax(0, 180px));
   grid-template-rows: auto;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 18px;
 
   .categories {
     border-radius: 10px;

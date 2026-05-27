@@ -35,7 +35,7 @@
       <p
         class="nav-buttons"
         [class.active]="currentSlide === 2"
-        (click)="goToSlide(1)"
+        (click)="goToSlide(2)"
         fill="clear"
       ></p>
     </div>
@@ -65,7 +65,7 @@
       >
         @for (item of filmes(); track item.titulo) {
         <!-- Card 1 -->
-        <div class="item-card">
+        <div class="item-card" (click)="abrirDetalhes(item)">
           <div class="item-cover">
             <img
               class="item-img"
@@ -103,7 +103,7 @@
         <!-- Card -->
         @for (item of series(); track item.titulo) {
         <!-- Card 1 -->
-        <div class="item-card">
+        <div class="item-card" (click)="abrirDetalhes(item)">
           <div class="item-cover">
             <img
               class="item-img"
@@ -141,7 +141,7 @@
       >
         <!-- Card -->
         @for (item of animes(); track item.titulo) {
-        <div class="item-card">
+        <div class="item-card" (click)="abrirDetalhes(item)">
           <div class="item-cover">
             <img
               class="item-img"

@@ -33,6 +33,14 @@ export const routes: Routes = [
       },
 
       {
+        path: 'movie-details',
+        loadComponent: () =>
+          import('../pages/movie-details/movie-details.page').then(
+            (m) => m.MovieDetailsPage,
+          ),
+      },
+
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full',

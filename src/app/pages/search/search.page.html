@@ -1,46 +1,78 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button fill="clear" class="botao-voltar" (click)="voltar()">
-        <span aria-hidden="true">&lt;</span>
-      </ion-button>
-    </ion-buttons>
+<ion-content fullscreen="true">
+  <!-- barra de pesquisa -->
+  <div class="container-search-bar">
+    <div class="block"></div>
 
-    <ion-title>Voltar</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <div class="wrapper-input">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="color: #5d5f5e"
+        class="button-svg"
+      >
+        <path
+          d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M21 21L16.65 16.65"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
 
-<ion-content>
-  <ion-searchbar
-    [(ngModel)]="termoBusca"
-    (ionInput)="buscarFilmes()"
-    placeholder="Pesquisar filmes">
-  </ion-searchbar>
-
-  <div class="grade-filmes">
-    <div
-      class="cartao-filme"
-      *ngFor="let filme of filmes"
-      role="button"
-      tabindex="0"
-      (click)="abrirDetalhes(filme)"
-      (keydown.enter)="abrirDetalhes(filme)">
-
-      <div class="poster-container">
-        <img
-          class="poster-filme"
-          [src]="filme.poster_path ? 'https://image.tmdb.org/t/p/w500' + filme.poster_path : 'assets/banners/Duna.webp'"
-          [alt]="filme.title">
-
-        <span
-          class="marcado-assistir"
-          *ngIf="estaMarcadoParaAssistir(filme)"
-          aria-label="Marcado para assistir">
-          &#10003;
-        </span>
-      </div>
-
-      <h3>{{ filme.title }}</h3>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Pesquisar"
+        (input)="pesquisar($event)"
+      />
     </div>
+
+    <div class="block"></div>
+  </div>
+
+  <!-- container filmes -->
+  <div class="container-movies">
+    <div class="block"></div>
+
+    <div class="content-card">
+      <div
+        class="cartao-filme"
+        *ngFor="let filme of filmes"
+        role="button"
+        tabindex="0"
+        (click)="abrirDetalhes(filme)"
+        (keydown.enter)="abrirDetalhes(filme)"
+      >
+        <div class="poster-container">
+          <img
+            class="poster-filme"
+            [src]="filme.poster_path ? 'https://image.tmdb.org/t/p/w500' + filme.poster_path : 'assets/banners/Duna.webp'"
+            [alt]="filme.title"
+          />
+
+          <span
+            class="marcado-assistir"
+            *ngIf="estaAssistido(filme)"
+            aria-label="Marcado para assistir"
+          >
+            &#10003;
+          </span>
+        </div>
+
+        <h3>{{ filme.title || filme.name }}</h3>
+      </div>
+    </div>
+
+    <div class="block"></div>
   </div>
 </ion-content>

@@ -3,26 +3,17 @@ import { CommonModule, Location } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { MovieService } from '../services/movie';
+import { MovieService } from '../../services/search/movie';
 
 @Component({
   selector: 'app-movie-details',
   templateUrl: './movie-details.page.html',
   styleUrls: ['./movie-details.page.scss'],
   standalone: true,
-
-  imports: [
-    IonicModule,
-    CommonModule
-  ]
+  imports: [IonicModule, CommonModule],
 })
 export class MovieDetailsPage {
-
-  pastas = [
-    {
-      nome: 'Filmes'
-    }
-  ];
+  pastas = [{ nome: 'Filmes' }];
 
   buscaPasta = '';
   seletorPastasAberto = false;
@@ -33,40 +24,47 @@ export class MovieDetailsPage {
     overview: 'Sinopse indisponivel.',
     backdrop_path: '',
     poster_path: '',
-    assistir: false,
-    favorito: false
+    favorito: false,
   };
 
   constructor(
     private roteador: Router,
     private localizacao: Location,
-    private servicoFilmes: MovieService
+    private servicoFilmes: MovieService,
   ) {
     const navegacao = this.roteador.getCurrentNavigation();
-    const filmeRecebido = navegacao?.extras.state?.['filme'] || history.state?.filme;
+    const filmeRecebido =
+      navegacao?.extras.state?.['filme'] || history.state?.filme;
 
     if (filmeRecebido) {
       this.filme = {
         ...filmeRecebido,
-        assistir: this.servicoFilmes.estaMarcadoParaAssistir(filmeRecebido),
-        favorito: false
+        favorito: false,
       };
     }
   }
 
-  get imagemBanner() {
-    const caminhoImagem = this.filme.backdrop_path || this.filme.poster_path;
+  // =====================
+  // UI helpers
+  // =====================
 
-    if (!caminhoImagem) {
+  get imagemBanner() {
+    const caminho = this.filme.backdrop_path || this.filme.poster_path;
+
+    if (!caminho) {
       return 'assets/banners/Duna.webp';
     }
 
-    return `https://image.tmdb.org/t/p/w780${caminhoImagem}`;
+    return `https://image.tmdb.org/t/p/w780${caminho}`;
   }
 
   get sinopse() {
     return this.filme.overview || 'Sinopse indisponivel.';
   }
+
+  // =====================
+  // navegação
+  // =====================
 
   voltar() {
     this.localizacao.back();
@@ -76,13 +74,29 @@ export class MovieDetailsPage {
     this.roteador.navigate([rota]);
   }
 
+  // =====================
+  // ✔️ assistido
+  // =====================
+
+  alternarAssistir() {
+    this.servicoFilmes.alternarAssistido(this.filme);
+  }
+
+  estaAssistido(): boolean {
+    return this.servicoFilmes.estaAssistido(this.filme);
+  }
+
+  // =====================
+  // ⭐ favorito (placeholder atual)
+  // =====================
+
   alternarFavorito() {
     this.seletorPastasAberto = true;
   }
 
-  alternarAssistir() {
-    this.filme.assistir = this.servicoFilmes.alternarParaAssistir(this.filme);
-  }
+  // =====================
+  // pastas
+  // =====================
 
   fecharSeletorPastas() {
     this.seletorPastasAberto = false;
@@ -97,12 +111,10 @@ export class MovieDetailsPage {
   get pastasFiltradas() {
     const busca = this.buscaPasta.trim().toLowerCase();
 
-    if (!busca) {
-      return this.pastas;
-    }
+    if (!busca) return this.pastas;
 
     return this.pastas.filter((pasta) =>
-      pasta.nome.toLowerCase().includes(busca)
+      pasta.nome.toLowerCase().includes(busca),
     );
   }
 
@@ -114,18 +126,16 @@ export class MovieDetailsPage {
 
   criarPasta() {
     const nomeNovaPasta = this.buscaPasta.trim() || 'Nova pasta';
-    const pastaExistente = this.pastas.some((pasta) =>
-      pasta.nome.toLowerCase() === nomeNovaPasta.toLowerCase()
+
+    const existe = this.pastas.some(
+      (pasta) => pasta.nome.toLowerCase() === nomeNovaPasta.toLowerCase(),
     );
 
-    if (!pastaExistente) {
-      this.pastas.push({
-        nome: nomeNovaPasta
-      });
+    if (!existe) {
+      this.pastas.push({ nome: nomeNovaPasta });
     }
 
     this.selecionarPasta(nomeNovaPasta);
     this.buscaPasta = '';
   }
-
 }

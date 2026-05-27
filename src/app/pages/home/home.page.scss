@@ -78,6 +78,8 @@ ion-content {
   column-gap: 10px;
   margin-left: 5px;
   overflow-x: auto;
+  touch-action: pan-y;
+  scrollbar-width: none;
 
   .item-card {
     flex-shrink: 0;

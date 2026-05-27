@@ -12,7 +12,8 @@ ion-content {
 
 .container-back-button {
   display: grid;
-  grid-template-columns: minmax(24px, 10px) 1fr minmax(24px, 10px);
+  grid-template-columns: minmax(20px, 10px) 1fr minmax(20px, 10px);
+  padding-top: env(safe-area-inset-top);
 
   .content-wrapper {
     position: relative;
@@ -22,7 +23,7 @@ ion-content {
   }
 
   .back-button-svg-wrapper {
-    left: 0px;
+    left: -8px;
     position: absolute;
     height: 33px;
     display: flex;
@@ -52,7 +53,7 @@ ion-content {
 
 .container-genres {
   display: grid;
-  grid-template-columns: minmax(24px, 10px) 1fr minmax(24px, 10px);
+  grid-template-columns: minmax(20px, 10px) 1fr minmax(20px, 10px);
 }
 
 .content-wrapper-genres {
@@ -60,7 +61,7 @@ ion-content {
   grid-template-columns: repeat(2, minmax(0, 180px));
   grid-template-rows: auto;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 24px;
 
   .genres {
     border-radius: 10px;
