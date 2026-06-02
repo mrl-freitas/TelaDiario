@@ -1,0 +1,419 @@
+// ==========================================
+// CONFIGURAÇÃO GLOBAL DA TELA (FUNDO PRETO)
+// ==========================================
+:host {
+  background-color: #000000 !important;
+}
+
+ion-content {
+  --background: #000000 !important; /* Garante o fundo preto no componente do Ionic */
+  background-color: #000000 !important;
+}
+
+// ==========================================
+// 1. TELA DESCONECTADO (GUEST)
+// ==========================================
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100% - 56px);
+  padding: 0 24px;
+  text-align: center;
+  box-sizing: border-box;
+
+  .guest-icon {
+    font-size: 110px;
+    color: var(--ion-color-medium);
+    margin-bottom: 20px;
+  }
+
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #ffffff; }
+  p { font-size: 15px; color: var(--ion-color-medium); margin-bottom: 32px; max-width: 280px; }
+  ion-button { width: 100%; max-width: 320px; --border-radius: 8px; font-weight: 600; }
+
+  .login-option {
+    margin-top: 20px;
+    font-size: 14px;
+    a { color: var(--ion-color-primary); text-decoration: none; font-weight: 600; }
+  }
+}
+
+// ==========================================
+// 2. TELA LOGADO (ESTRUTURA GERAL)
+// ==========================================
+.logged-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 120px);
+  padding: 16px;
+  box-sizing: border-box;
+
+  // Menu principal (Configurações / Minha Lista)
+  .menu-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+
+    ion-item {
+      --background: transparent;
+      --color: #ffffff;
+      --inner-padding-end: 8px;
+      font-size: 16px;
+      font-weight: 500;
+
+      ion-icon[slot="start"] {
+        color: #ffffff;
+        font-size: 22px;
+        margin-right: 16px;
+      }
+
+      .arrow-icon {
+        color: #555555;
+        font-size: 18px;
+      }
+    }
+  }
+
+  // Rodapé (Sair da conta)
+  .logout-footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+    ion-button {
+      --color: #e53935;
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: none;
+
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+// Wrapper do menu principal
+.menu-wrapper {
+  width: 100%;
+}
+
+// ==========================================
+// 3. SUB-TELA: MINHA LISTA (Idêntico ao das Categorias)
+// ==========================================
+.my-list-wrapper {
+  width: 100%;
+  padding-top: 10px;
+
+  .grid-listas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 180px));
+    gap: 20px;
+    width: 100%;
+
+    .folder-card {
+      border-radius: 10px;
+      background-color: #1d1d1d;
+      aspect-ratio: 6 / 5;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+
+      .folder-title {
+        bottom: 15%;
+        left: 16px;
+        position: absolute;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80%;
+      }
+    }
+
+    .add-folder-card {
+      background: transparent;
+      aspect-ratio: 6 / 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      ion-icon {
+        font-size: 64px;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+// ==========================================
+// 4. BALÃO DE CONFIRMAÇÃO (MODAL)
+// ==========================================
+.custom-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 24px;
+  box-sizing: border-box;
+
+  .custom-modal-box {
+    background: #1e1e1e;
+    width: 100%;
+    max-width: 340px;
+    height: 160px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 12px;
+
+      button {
+        flex: 1;
+        height: 48px;
+        border-radius: 24px;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:active {
+          opacity: 0.8;
+        }
+      }
+
+      .btn-sair {
+        background: #ffffff;
+        color: #000000;
+      }
+
+      .btn-continuar {
+        background: #000000;
+        color: #ffffff;
+        border: 1px solid #2d2d2d;
+      }
+    }
+  }
+}
+
+// ==========================================
+// 5. CUSTOMIZAÇÃO DO CABEÇALHO (TOOLBAR)
+// ==========================================
+ion-toolbar {
+  --background: transparent;
+  --border-style: none;
+
+  ion-button {
+    --color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: none;
+    --padding-start: 0;
+
+    ion-icon {
+      color: #ffffff !important;
+      font-size: 20px;
+    }
+  }
+}
+
+// ===================================================
+// BALÃO DE CRIAR PASTA
+// ===================================================
+.custom-modal-overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75) !important;
+  z-index: 9999 !important;
+
+  .folder-modal-box {
+    background: #1e1e1e !important;
+    width: 100% !important;
+    max-width: 345px !important;
+    border-radius: 20px !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    box-sizing: border-box !important;
+
+    .input-container {
+      border: 1px solid #757575 !important;
+      border-radius: 10px !important;
+      padding: 12px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      background: transparent !important;
+      text-align: left !important;
+
+      .input-label {
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        margin-bottom: 6px !important;
+      }
+
+      .custom-modal-input {
+        background: transparent !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-size: 15px !important;
+        outline: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+
+        &::placeholder {
+          color: #555555 !important;
+        }
+      }
+    }
+
+    .btn-criar-pasta {
+      width: 100% !important;
+      height: 48px !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: none !important;
+      border-radius: 24px !important;
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      text-transform: uppercase !important;
+    }
+  }
+}
+
+// ===================================================
+// ESTILO DA TELA DE ALTERAR E-MAIL E SENHA
+// ===================================================
+.email-form-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 8px;
+  box-sizing: border-box;
+
+  .custom-input-pill {
+    width: 100%;
+    height: 56px;
+    border: 1px solid #757575;
+    border-radius: 28px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    box-sizing: border-box;
+
+    input {
+      width: 90%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 500;
+
+      &::placeholder {
+        color: #555555;
+      }
+    }
+
+    .password-toggle-icon {
+      color: #ffffff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+  }
+
+  .btn-mudar-email {
+    width: 100%;
+    height: 52px;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 26px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}
+
+// Estilo para o cabeçalho customizado que impede a sobreposição
+.main-profile-header {
+  padding: 32px 20px 12px 20px; // Garante o respiro em cima e embaixo do título
+  background-color: transparent;
+}
+
+.main-profile-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff; // Ou a cor padrão de texto do seu tema
+  margin: 0;
+}
+
+// Garante que o container logado herde uma margem segura se o título estiver visível
+.logged-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menu-wrapper {
+  margin-top: 8px; // Empurra os cards levemente para baixo
+  padding: 0 16px;
+}
+
+// Torna o fundo do cabeçalho completamente sólido para ocultar os itens que sobem
+.header-fixo {
+  --background: #000000; /* Define a cor de fundo oficial do fundo da sua aplicação */
+  --color: #ffffff;      /* Cor do título principal "Perfil" */
+  box-shadow: none;
+}
+
+// Cria uma distância de respiro para que os primeiros botões não comecem colados sob a barra fixa
+.logged-container {
+  padding-top: 16px;
+}
+
+// Garante que as telas de formulários e submenus também tenham o espaçamento seguro no topo
+.my-list-wrapper,
+.email-form-wrapper {
+  padding-top: 16px;
+}

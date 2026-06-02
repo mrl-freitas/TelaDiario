@@ -12,38 +12,31 @@ ion-content {
 
 .container-back-button {
   display: grid;
+  /* Mantém estritamente o seu padrão de grid de 3 colunas para alinhar com os gêneros abaixo */
   grid-template-columns: minmax(20px, 10px) 1fr minmax(20px, 10px);
   padding-top: env(safe-area-inset-top);
+  margin-top: 12px; /* Margem sutil para desgrudar do topo do dispositivo */
 
   .content-wrapper {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha o botão totalmente no canto esquerdo da coluna central */
+    gap: 6px; /* Espaçamento exato e fixo entre a seta e a palavra 'Voltar' */
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .back-icon {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .back-button-svg-wrapper {
-    left: -8px;
-    position: absolute;
-    height: 33px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .back-button-text-wrapper {
-    width: 100%;
-    height: 33px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #ffffff33;
-
-    .back-button-text {
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-    }
+  .back-button-text {
+    color: white;
+    font-size: 17px; /* Tamanho idêntico ao do design do perfil */
+    font-weight: 700; /* Negrito marcante igual ao da print 2 */
+    letter-spacing: -0.3px;
   }
 }
 

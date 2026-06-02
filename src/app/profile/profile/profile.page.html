@@ -1,13 +1,144 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+<ion-header [translucent]="false" *ngIf="!showMyList && !showSettings && !showChangeEmail && !showChangePassword">
+  <ion-toolbar class="header-fixo">
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- SEGUNDO HEADER FIXO: Alterado para translucent="false" e adicionado a classe header-fixo -->
+<ion-header [translucent]="false" *ngIf="isLoggedIn && (showMyList || showSettings || showChangeEmail || showChangePassword)">
+  <ion-toolbar class="header-fixo">
+    <ion-buttons slot="start">
+      <ion-button (click)="voltarParaPerfil()">
+        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+        Voltar
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="auth-container" *ngIf="!isLoggedIn">
+    <ion-icon name="person-circle-outline" class="guest-icon"></ion-icon>
+    <h2>Gerencie seu catálogo</h2>
+    <p>Para salvar seus filmes e séries favoritos, crie um perfil ou acesse sua conta existente.</p>
+
+    <ion-button expand="block" color="primary" class="ion-margin-top" (click)="simularLogin()">
+      Crie sua conta
+    </ion-button>
+    <p class="login-option">
+      Caso já tenha uma conta, <a href="#" (click)="simularLogin(); $event.preventDefault()">faça login</a>.
+    </p>
+  </div>
+
+  <div class="logged-container" *ngIf="isLoggedIn">
+
+    <div class="menu-wrapper" *ngIf="!showMyList && !showSettings && !showChangeEmail && !showChangePassword">
+      <ion-list lines="full" class="menu-card">
+        <ion-item detail="false" button (click)="irParaConfiguracoes()">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Configurações da conta</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+        </ion-item>
+
+        <ion-item detail="false" button (click)="irParaMinhaLista()">
+          <ion-icon name="star-outline" slot="start"></ion-icon>
+          <ion-label>Minha lista</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="my-list-wrapper" *ngIf="showMyList">
+      <div class="grid-listas">
+        <div class="folder-card" *ngFor="let folderName of folders">
+          <span class="folder-title">{{ folderName }}</span>
+        </div>
+
+        <div class="add-folder-card" (click)="abrirModalPasta()">
+          <ion-icon name="add-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-wrapper" *ngIf="showSettings">
+      <ion-list lines="full" class="menu-card">
+        <ion-item detail="false" button (click)="irParaAlterarEmail()">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>Alterar e-mail</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+        </ion-item>
+
+        <ion-item detail="false" button (click)="irParaAlterarSenha()">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label>Alterar senha</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end" class="arrow-icon"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="email-form-wrapper" *ngIf="showChangeEmail">
+      <div class="custom-input-pill">
+        <input type="email" placeholder="E-mail atual" disabled />
+      </div>
+
+      <div class="custom-input-pill">
+        <input type="email" placeholder="E-mail novo" disabled />
+      </div>
+
+      <button class="btn-mudar-email">MUDAR E-MAIL</button>
+    </div>
+
+    <div class="email-form-wrapper" *ngIf="showChangePassword">
+      <div class="custom-input-pill">
+        <input type="password" placeholder="Senha atual" disabled />
+        <ion-icon name="eye-off-outline" class="password-toggle-icon"></ion-icon>
+      </div>
+
+      <div class="custom-input-pill">
+        <input type="password" placeholder="Nova senha" disabled />
+        <ion-icon name="eye-off-outline" class="password-toggle-icon"></ion-icon>
+      </div>
+
+      <div class="custom-input-pill">
+        <input type="password" placeholder="Nova senha" disabled />
+        <ion-icon name="eye-off-outline" class="password-toggle-icon"></ion-icon>
+      </div>
+
+      <button class="btn-mudar-email">MUDAR SENHA</button>
+    </div>
+
+    <div class="custom-modal-overlay" *ngIf="showCreateFolderModal" (click)="fecharModalPasta()">
+      <div class="folder-modal-box" (click)="$event.stopPropagation()">
+        <div class="input-container">
+          <label class="input-label">Nome da pasta</label>
+          <input
+            type="text"
+            placeholder="Dê um nome a pasta"
+            [(ngModel)]="newFolderName"
+            class="custom-modal-input"
+            maxlength="20"
+          />
+        </div>
+        <button class="btn-criar-pasta" (click)="criarNovaPasta()">CRIAR</button>
+      </div>
+    </div>
+
+    <div class="custom-modal-overlay" *ngIf="showLogoutModal">
+      <div class="custom-modal-box">
+        <div class="modal-buttons">
+          <button class="btn-sair" (click)="confirmarSair()">SAIR</button>
+          <button class="btn-continuar" (click)="cancelarSair()">CONTINUAR</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="logout-footer" *ngIf="!showMyList && !showSettings && !showChangeEmail && !showChangePassword">
+      <ion-button fill="clear" color="danger" (click)="abrirConfirmacaoLogout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Sair da conta
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>
