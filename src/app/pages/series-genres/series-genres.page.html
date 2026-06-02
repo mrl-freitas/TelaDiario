@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <!-- Container voltar -->
+  <div class="container-back-button">
+    <div class="block"></div>
+
+    <div class="content-wrapper">
+      <div class="back-button-svg-wrapper">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#ffffff33"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          routerLink="/categories"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </div>
+
+      <div class="back-button-text-wrapper">
+        <span class="back-button-text">Voltar</span>
+      </div>
+    </div>
+    <div class="block"></div>
+  </div>
+
+  <!-- Container gêneros -->
+  <div class="container-genres">
+    <div class="block"></div>
+
+    <div class="content-wrapper-genres">
+      @for (genre of genres; track genre.id) {
+      <div class="genres" [routerLink]="['/movie-list', 'tv', genre.id]">
+        <span class="genres-text"> {{ genre.name }} </span>
+      </div>
+      }
+    </div>
+
+    <div class="block"></div>
+  </div>
+</ion-content>

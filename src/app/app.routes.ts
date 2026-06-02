@@ -43,8 +43,24 @@ export const routes: Routes = [
       import('./profile//settings/settings.page').then((m) => m.SettingsPage),
   },
   {
-    path: 'genres',
+    path: 'movie-genres',
     loadComponent: () =>
-      import('./pages/genres/genres.page').then((m) => m.GenresPage),
+      import('./pages/movie-genres/movie-genres.page').then(
+        (m) => m.GenresPage,
+      ),
+  },
+  {
+    path: 'anime-genres',
+    loadComponent: () =>
+      import('./pages/animes-genres/animes-genres.page').then(
+        (m) => m.AnimeGenresPage,
+      ),
+  },
+  {
+    path: 'series-genres',
+    loadComponent: () =>
+      import('./pages/series-genres/series-genres.page').then(
+        (m) => m.SeriesGenresPage,
+      ),
   },
 ];

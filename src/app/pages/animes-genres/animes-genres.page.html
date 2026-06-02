@@ -32,13 +32,11 @@
     <div class="block"></div>
 
     <div class="content-wrapper-genres">
-      <div class="genres"><span class="genres-text">ação</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
-      <div class="genres"><span class="genres-text">gênero</span></div>
+      @for (genre of genres; track genre.id) {
+      <div class="genres" [routerLink]="['/movie-list', 'anime', genre.id]">
+        <span class="genres-text"> {{ genre.name }} </span>
+      </div>
+      }
     </div>
 
     <div class="block"></div>

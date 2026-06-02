@@ -1,0 +1,67 @@
+<ion-content fullscreen="true">
+  <!-- Container voltar -->
+  <div class="container-back-button">
+    <div class="block"></div>
+
+    <div class="content-wrapper">
+      <div class="back-button-svg-wrapper" (click)="voltar()">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#ffffff33"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          routerLink="/categories"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </div>
+
+      <div class="back-button-text-wrapper">
+        <span class="back-button-text">Voltar</span>
+      </div>
+    </div>
+    <div class="block"></div>
+  </div>
+
+  <!-- container filmes -->
+  <div class="container-movies">
+    <div class="block"></div>
+
+    <div class="content-card">
+      <div
+        class="cartao-filme"
+        *ngFor="let item of items"
+        role="button"
+        tabindex="0"
+        (click)="abrirDetalhes(item)"
+        (keydown.enter)="abrirDetalhes(item)"
+      >
+        <div class="poster-container">
+          <img
+            class="poster-filme"
+            [src]="item.poster_path 
+              ? 'https://image.tmdb.org/t/p/w500' + item.poster_path 
+              : 'assets/banners/Duna.webp'"
+            [alt]="item.title || item.name"
+          />
+
+          <span
+            class="marcado-assistir"
+            *ngIf="estaAssistido(item)"
+            aria-label="Marcado para assistir"
+          >
+            &#10003;
+          </span>
+        </div>
+
+        <h3>{{ item.title || item.name }}</h3>
+      </div>
+    </div>
+
+    <div class="block"></div>
+  </div>
+</ion-content>

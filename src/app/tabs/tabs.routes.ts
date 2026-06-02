@@ -41,6 +41,14 @@ export const routes: Routes = [
       },
 
       {
+        path: 'movie-list/:type/:genreId',
+        loadComponent: () =>
+          import('../pages/movie-list/movie-list.page').then(
+            (m) => m.MovieListPage,
+          ),
+      },
+
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full',

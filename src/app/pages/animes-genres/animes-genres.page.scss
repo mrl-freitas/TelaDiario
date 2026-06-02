@@ -80,3 +80,14 @@ ion-content {
     font-size: 16px;
   }
 }
+
+ion-content::part(scroll) {
+  scrollbar-width: none !important; /* Esconde no Firefox */
+  -ms-overflow-style: none !important; /* Esconde no IE/Edge */
+}
+
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none !important; /* Esconde no Android, iOS e Chrome */
+  width: 0 !important;
+  height: 0 !important;
+}
