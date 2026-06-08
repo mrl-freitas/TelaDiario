@@ -14,7 +14,7 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          routerLink="/categories"
+          routerLink="/settings"
         >
           <path d="M15 18l-6-6 6-6" />
         </svg>
@@ -27,15 +27,29 @@
     <div class="block"></div>
   </div>
 
-  <div class="container-genres">
+  <div class="container">
     <div class="block"></div>
 
-    <div class="content-wrapper-genres">
-      @for (genre of genres; track genre.id) {
-      <div class="genres" [routerLink]="['/movie-list', 'anime', genre.id]">
-        <span class="genres-text"> {{ genre.name }} </span>
-      </div>
-      }
+    <div class="wrapper">
+      <!-- e-mail -->
+      <ion-item class="current-email-field-container" fill="underline">
+        <ion-input
+          type="email"
+          placeholder="E-mail atual"
+          class="current-email-input"
+        ></ion-input>
+      </ion-item>
+
+      <!-- senha -->
+      <ion-item class="new-email-field-container" fill="underline">
+        <ion-input
+          class="new-email-input"
+          type="password"
+          placeholder="E-mail novo"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button expand="block"> MUDAR E-MAIL </ion-button>
     </div>
 
     <div class="block"></div>

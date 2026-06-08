@@ -1,8 +1,15 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 ion-content {
   --background: #000;
   color: #fff;
 }
 
+/*---------------------------------------------------------------------------------------------banner*/
 .detalhes-filme {
   min-height: 100%;
   background: #000;
@@ -79,17 +86,13 @@ ion-content {
 }
 
 .botao-acao {
-  width: 48px;
-  height: 48px;
+  background-color: #1d1d1d;
+  width: 45px;
+  height: 45px;
   --padding-start: 0;
   --padding-end: 0;
   margin: 0;
-}
-
-.botao-acao img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  border-radius: 50%;
 }
 
 .sinopse {
@@ -110,6 +113,7 @@ ion-content {
   font-size: 12px;
   font-weight: 700;
 }
+/*---------------------------------------------------------------------------------------------banner*/
 
 /*---------------------------------------------------------------------------------------------Moldar*/
 
@@ -169,7 +173,7 @@ ion-content {
   color: white;
 }
 
-/*---------------------------------------------------------------------------------------------Moldar*/
+/*---------------------------------------------------------------------------------------------Modal*/
 
 .container-folders {
   padding: 0 11px;
@@ -254,6 +258,8 @@ ion-content {
   object-fit: contain;
 }
 
+/*---------------------------------------------------------------------------------------------Modal*/
+
 ion-content::part(scroll) {
   scrollbar-width: none !important; /* Esconde no Firefox */
   -ms-overflow-style: none !important; /* Esconde no IE/Edge */
@@ -263,4 +269,12 @@ ion-content::part(scroll)::-webkit-scrollbar {
   display: none !important; /* Esconde no Android, iOS e Chrome */
   width: 0 !important;
   height: 0 !important;
+}
+
+.sinopse {
+  margin: 26px 0 0;
+  color: #7f7f7f;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 400;
 }

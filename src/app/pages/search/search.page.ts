@@ -4,9 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-
 import { SearchService } from '../../services/search/search';
-import { MovieService } from '../../services/search/movie';
 import { MediaApiService } from '../../services/search/media';
 
 @Component({
@@ -20,7 +18,6 @@ export class SearchPage implements OnInit {
   filmes: any[] = [];
 
   constructor(
-    private movieService: MovieService,
     private mediaApi: MediaApiService,
     private searchService: SearchService,
     private location: Location,
@@ -95,10 +92,6 @@ export class SearchPage implements OnInit {
 
   voltar(): void {
     this.location.back();
-  }
-
-  estaAssistido(filme: any): boolean {
-    return this.movieService.estaAssistido(filme);
   }
 
   abrirDetalhes(filme: any): void {

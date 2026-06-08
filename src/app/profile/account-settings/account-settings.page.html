@@ -5,7 +5,7 @@
       <div class="block"></div>
 
       <div class="content-wrapper">
-        <div class="back-button-svg-wrapper" routerLink="/home">
+        <div class="back-button-svg-wrapper">
           <svg
             width="24"
             height="24"
@@ -15,6 +15,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            routerLink="/profile"
           >
             <path d="M15 18l-6-6 6-6" />
           </svg>
@@ -34,13 +35,13 @@
 
       <div lines="full" class="content-card">
         <div class="item-card">
-          <div class="menu-item" routerLink="/settings">
+          <div class="menu-item" routerLink="/change-email">
             <ion-icon
-              name="settings-outline"
+              name="mail-outline"
               slot="start"
               class="settings-icon"
             ></ion-icon>
-            <span>Configurações da conta</span>
+            <span>Alterar e-mail</span>
             <ion-icon
               name="chevron-forward-outline"
               slot="end"
@@ -51,14 +52,14 @@
 
         <div class="line"></div>
 
-        <div class="item-card" routerLink="/folders">
+        <div class="item-card" routerLink="/change-password">
           <div class="menu-item">
             <ion-icon
-              name="star-outline"
+              name="lock-closed-outline"
               slot="start"
               class="start-icon"
             ></ion-icon>
-            <span>Minha lista</span>
+            <span>Alterar senha</span>
             <ion-icon
               name="chevron-forward-outline"
               slot="end"
@@ -71,34 +72,5 @@
       <!--bloco-->
       <div class="block"></div>
     </div>
-
-    <!--Sair da conta -->
-    <div class="container-footer">
-      <!--bloco-->
-      <div class="block"></div>
-
-      <ion-button fill="clear" class="lougout-button" (click)="openModal()">
-        <ion-icon
-          slot="start"
-          name="log-out-outline"
-          class="logout-icon"
-        ></ion-icon>
-        Sair da conta
-      </ion-button>
-
-      <!--bloco-->
-      <div class="block"></div>
-    </div>
   </div>
-
-  @if (isModalOpen) {
-  <div class="custom-modal-overlay">
-    <div class="custom-modal-box">
-      <div class="modal-buttons">
-        <button class="btn-sair">SAIR</button>
-        <button class="btn-continuar" (click)="closeModal()">CONTINUAR</button>
-      </div>
-    </div>
-  </div>
-  }
 </ion-content>

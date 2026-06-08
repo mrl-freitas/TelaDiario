@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
 
@@ -38,11 +38,6 @@ export const routes: Routes = [
   },
 
   {
-    path: 'settings',
-    loadComponent: () =>
-      import('./profile//settings/settings.page').then((m) => m.SettingsPage),
-  },
-  {
     path: 'movie-genres',
     loadComponent: () =>
       import('./pages/movie-genres/movie-genres.page').then(
@@ -61,6 +56,40 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/series-genres/series-genres.page').then(
         (m) => m.SeriesGenresPage,
+      ),
+  },
+
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./profile/account-settings/account-settings.page').then(
+        (m) => m.AccountSettingsPage,
+      ),
+  },
+  {
+    path: 'change-email',
+    loadComponent: () =>
+      import('./profile/change-email/change-email.page').then(
+        (m) => m.ChangeEmailPage,
+      ),
+  },
+  {
+    path: 'change-password',
+    loadComponent: () =>
+      import('./profile/change-password/change-password.page').then(
+        (m) => m.ChangePasswordPage,
+      ),
+  },
+  {
+    path: 'folders',
+    loadComponent: () =>
+      import('./profile/folders/folders.page').then((m) => m.FavoritesPage),
+  },
+  {
+    path: 'folder-details',
+    loadComponent: () =>
+      import('./profile/folder-details/folder-details.page').then(
+        (m) => m.FolderDetailsPage,
       ),
   },
 ];

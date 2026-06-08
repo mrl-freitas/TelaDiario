@@ -33,32 +33,29 @@
 
     <div class="content-card">
       <div
-        class="cartao-filme"
+        class="item-card"
         *ngFor="let item of items"
         role="button"
         tabindex="0"
         (click)="abrirDetalhes(item)"
         (keydown.enter)="abrirDetalhes(item)"
       >
-        <div class="poster-container">
+        <div class="item-cover">
           <img
-            class="poster-filme"
+            class="item-mg"
             [src]="item.poster_path 
               ? 'https://image.tmdb.org/t/p/w500' + item.poster_path 
               : 'assets/banners/Duna.webp'"
             [alt]="item.title || item.name"
           />
 
-          <span
-            class="marcado-assistir"
-            *ngIf="estaAssistido(item)"
-            aria-label="Marcado para assistir"
-          >
+          <span class="marcado-assistir" aria-label="Marcado para assistir">
             &#10003;
           </span>
         </div>
-
-        <h3>{{ item.title || item.name }}</h3>
+        <div class="content-name">
+          <p class="item-name">{{ item.title || item.name }}</p>
+        </div>
       </div>
     </div>
 

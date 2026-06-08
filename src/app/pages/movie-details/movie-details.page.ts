@@ -3,8 +3,6 @@ import { CommonModule, Location } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { MovieService } from '../../services/search/movie';
-
 @Component({
   selector: 'app-movie-details',
   templateUrl: './movie-details.page.html',
@@ -14,6 +12,21 @@ import { MovieService } from '../../services/search/movie';
 })
 export class MovieDetailsPage {
   pastas = [{ nome: 'Filmes' }];
+  sinopseExpandida = false;
+
+  alternarSinopse() {
+    this.sinopseExpandida = !this.sinopseExpandida;
+  }
+
+  get sinopseExibida() {
+    if (this.sinopseExpandida) {
+      return this.sinopse;
+    }
+
+    return this.sinopse.length > 180
+      ? this.sinopse.slice(0, 180) + '...'
+      : this.sinopse;
+  }
 
   buscaPasta = '';
   seletorPastasAberto = false;
@@ -30,7 +43,6 @@ export class MovieDetailsPage {
   constructor(
     private roteador: Router,
     private localizacao: Location,
-    private servicoFilmes: MovieService,
   ) {
     const navegacao = this.roteador.getCurrentNavigation();
     const filmeRecebido =
@@ -43,10 +55,6 @@ export class MovieDetailsPage {
       };
     }
   }
-
-  // =====================
-  // UI helpers
-  // =====================
 
   get imagemBanner() {
     const caminho = this.filme.backdrop_path || this.filme.poster_path;
@@ -62,10 +70,6 @@ export class MovieDetailsPage {
     return this.filme.overview || 'Sinopse indisponivel.';
   }
 
-  // =====================
-  // navegação
-  // =====================
-
   voltar() {
     this.localizacao.back();
   }
@@ -74,29 +78,9 @@ export class MovieDetailsPage {
     this.roteador.navigate([rota]);
   }
 
-  // =====================
-  // ✔️ assistido
-  // =====================
-
-  alternarAssistir() {
-    this.servicoFilmes.alternarAssistido(this.filme);
-  }
-
-  estaAssistido(): boolean {
-    return this.servicoFilmes.estaAssistido(this.filme);
-  }
-
-  // =====================
-  // ⭐ favorito (placeholder atual)
-  // =====================
-
   alternarFavorito() {
     this.seletorPastasAberto = true;
   }
-
-  // =====================
-  // pastas
-  // =====================
 
   fecharSeletorPastas() {
     this.seletorPastasAberto = false;

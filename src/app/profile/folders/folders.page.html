@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+  <!-- Container voltar -->
+  <div class="container-back-button">
+    <div class="block"></div>
+
+    <div class="content-wrapper">
+      <div class="back-button-svg-wrapper">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#ffffff33"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          routerLink="/profile"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </div>
+
+      <div class="back-button-text-wrapper">
+        <span class="back-button-text">Voltar</span>
+      </div>
+    </div>
+    <div class="block"></div>
+  </div>
+
+  <div class="container-favorites">
+    <div class="block"></div>
+
+    <div class="content-wrapper-favorites">
+      <div class="favorites" *ngFor="let folder of folders">
+        <span class="favorites-text">{{ folder }}</span>
+      </div>
+
+      <div class="more-movies" (click)="abrirModal()">
+        <span class="more-movies-text">+</span>
+      </div>
+    </div>
+
+    <div class="block"></div>
+  </div>
+
+  <div class="custom-modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+    <div class="folder-modal-box" (click)="$event.stopPropagation()">
+      <div class="input-container">
+        <label class="input-label">Nome da pasta</label>
+
+        <input
+          type="text"
+          placeholder="Dê um nome à pasta"
+          class="custom-modal-input"
+          [(ngModel)]="nomePasta"
+          maxlength="20"
+        />
+      </div>
+
+      <button class="btn-criar-pasta" (click)="criarPasta()">CRIAR</button>
+    </div>
+  </div>
+</ion-content>
