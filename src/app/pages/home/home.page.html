@@ -42,9 +42,9 @@
   </div>
   <!-- Container dos Slides -->
 
-  <!-- Container dos Filmes -->
+  <!-- Container -->
   <div class="container-category">
-    <!-- Filmes 1 -->
+    <!-- Filmes  -->
     <div class="content-category">
       <!-- Título -->
       <div class="content-title">
@@ -73,7 +73,12 @@
               [alt]="item.titulo"
               draggable="false"
             />
-            <span class="marcado-assistir" aria-label="Marcado para assistir">
+            <div class="watched-overlay" *ngIf="isWatched(item.id)"></div>
+            <span
+              class="marcado-assistir"
+              aria-label="Marcado para assistir"
+              *ngIf="isWatched(item.id)"
+            >
               &#10003;
             </span>
           </div>
@@ -84,7 +89,7 @@
         }
       </div>
     </div>
-    <!-- Filmes 2 -->
+    <!-- Séries -->
     <div class="content-category">
       <!-- Título -->
       <div class="content-title">
@@ -114,7 +119,12 @@
               [alt]="item.titulo"
               draggable="false"
             />
-            <span class="marcado-assistir" aria-label="Marcado para assistir">
+            <div class="watched-overlay" *ngIf="isWatched(item.id)"></div>
+            <span
+              class="marcado-assistir"
+              aria-label="Marcado para assistir"
+              *ngIf="isWatched(item.id)"
+            >
               &#10003;
             </span>
           </div>
@@ -126,7 +136,7 @@
       </div>
     </div>
 
-    <!-- Filmes 3 -->
+    <!-- Animes -->
     <div class="content-category">
       <!-- Título -->
       <div class="content-title">
@@ -155,7 +165,12 @@
               [alt]="item.titulo"
               draggable="false"
             />
-            <span class="marcado-assistir" aria-label="Marcado para assistir">
+            <div class="watched-overlay" *ngIf="isWatched(item.id)"></div>
+            <span
+              class="marcado-assistir"
+              aria-label="Marcado para assistir"
+              *ngIf="isWatched(item.id)"
+            >
               &#10003;
             </span>
           </div>

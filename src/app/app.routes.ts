@@ -44,6 +44,7 @@ export const routes: Routes = [
         (m) => m.GenresPage,
       ),
   },
+
   {
     path: 'anime-genres',
     loadComponent: () =>
@@ -85,6 +86,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./profile/folders/folders.page').then((m) => m.FavoritesPage),
   },
+
   {
     path: 'folder-details',
     loadComponent: () =>

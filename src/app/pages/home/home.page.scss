@@ -70,6 +70,10 @@ ion-content {
 
 /*---------------------------------------------------------------------------------------------Category*/
 
+.content-category {
+  margin-top: 30px;
+}
+
 .content-title {
   p {
     margin-left: 5px;
@@ -141,4 +145,12 @@ ion-content::part(scroll)::-webkit-scrollbar {
   display: none !important; /* Esconde no Android, iOS e Chrome */
   width: 0 !important;
   height: 0 !important;
+}
+
+.watched-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* equivalente ao “60% visual” */
+  border-radius: 8px; /* se seus cards tiverem borda */
+  z-index: 1;
 }

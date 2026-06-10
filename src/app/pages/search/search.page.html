@@ -47,25 +47,31 @@
     <div class="content-card">
       <div
         class="cartao-filme"
-        *ngFor="let filme of filmes"
+        *ngFor="let item of filmes"
         role="button"
         tabindex="0"
-        (click)="abrirDetalhes(filme)"
-        (keydown.enter)="abrirDetalhes(filme)"
+        (click)="abrirDetalhes(item)"
+        (keydown.enter)="abrirDetalhes(item)"
       >
         <div class="poster-container">
           <img
             class="poster-filme"
-            [src]="filme.poster_path ? 'https://image.tmdb.org/t/p/w500' + filme.poster_path : 'assets/banners/Duna.webp'"
-            [alt]="filme.title"
+            [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w500' + item.poster_path : 'assets/banners/Duna.webp'"
+            [alt]="item.title"
           />
 
-          <span class="marcado-assistir" aria-label="Marcado para assistir">
+          <div class="watched-overlay" *ngIf="isWatched(item.id)"></div>
+
+          <span
+            class="marcado-assistir"
+            aria-label="Marcado para assistir"
+            *ngIf="isWatched(item.id)"
+          >
             &#10003;
           </span>
         </div>
 
-        <h3>{{ filme.title || filme.name }}</h3>
+        <h3>{{ item.title || item.name }}</h3>
       </div>
     </div>
 

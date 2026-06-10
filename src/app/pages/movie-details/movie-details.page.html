@@ -1,19 +1,27 @@
 <ion-content [fullscreen]="true">
-  <section class="detalhes-filme">
+  <!-- GUARDA PRINCIPAL (evita erro de filme undefined) -->
+  <section class="detalhes-filme" *ngIf="filme; else loading">
+    <!-- BANNER -->
     <div class="banner-filme">
-      <img [src]="imagemBanner" [alt]="filme.title" />
+      <img [src]="imagemBanner" [alt]="filme?.title" />
 
       <ion-button fill="clear" class="botao-voltar" (click)="voltar()">
         <span aria-hidden="true">&lt;</span>
       </ion-button>
     </div>
 
+    <!-- CONTEÚDO -->
     <div class="conteudo-filme">
       <div class="cabecalho-filme">
-        <h1>{{ filme.title }}</h1>
+        <h1>{{ filme?.title }}</h1>
 
         <div class="acoes-filme">
-          <ion-button fill="clear" class="botao-acao">
+          <!-- ASSISTIDO -->
+          <ion-button
+            fill="clear"
+            class="botao-acao"
+            (click)="toggleAssistido()"
+          >
             <svg
               width="32"
               height="32"
@@ -23,33 +31,34 @@
             >
               <path
                 d="M5 12L10 17L19 7"
-                stroke="#B2B2B2"
                 stroke-width="6"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                [attr.stroke]="isAssistido ? '#ffffff' : '#B2B2B2'"
               />
               <path
                 d="M5 12L10 17L19 7"
-                stroke="#1D1D1D"
                 stroke-width="4"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                [attr.stroke]="isAssistido ? '#ffffff' : '#1D1D1D'"
               />
             </svg>
           </ion-button>
 
+          <!-- FAVORITO -->
           <ion-button
             fill="clear"
             class="botao-acao"
-            (click)="alternarFavorito()"
+            (click)="abrirSeletorPastas()"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               width="28"
               height="28"
-              fill="none"
-              stroke="#B2B2B2"
+              [attr.fill]="isFavorite ? '#ffffff' : 'none'"
+              [style.stroke]="isAssistido ? '#ffffff' : '#B2B2B2'"
               stroke-width="1"
             >
               <path
@@ -61,17 +70,25 @@
         </div>
       </div>
 
+      <!-- SINOPSE -->
       <p class="sinopse" [class.expandida]="sinopseExpandida">
         {{ sinopseExibida }}
       </p>
 
-      <button type="button" class="ver-mais" (click)="alternarSinopse()">
+      <button type="button" class="ver-mais" (click)="sinopseExpandidaToggle()">
         {{ sinopseExpandida ? 'Ver menos' : 'Ver mais' }}
       </button>
     </div>
   </section>
 
-  <!-- Modal -->>
+  <!-- LOADING -->
+  <ng-template #loading>
+    <div class="loading-container">
+      <p>Carregando filme...</p>
+    </div>
+  </ng-template>
+
+  <!-- MODAL PASTAS -->
   <div
     class="fundo-seletor-pastas"
     *ngIf="seletorPastasAberto"
@@ -84,6 +101,7 @@
       aria-labelledby="titulo-pastas"
       (click)="$event.stopPropagation()"
     >
+      <!-- FECHAR -->
       <div class="content-close-button">
         <button
           type="button"
@@ -108,16 +126,17 @@
         </button>
       </div>
 
+      <!-- BUSCA -->
       <div class="container-folder-search">
         <input
           type="search"
           class="folder-search"
           placeholder="Pesquisar..."
-          [value]="buscaPasta"
           (input)="atualizarBuscaPasta($event)"
         />
       </div>
 
+      <!-- LISTA PASTAS -->
       <div class="container-folders">
         <h2 class="title-folder">Pastas</h2>
 
@@ -126,7 +145,7 @@
             type="button"
             class="folder-item"
             *ngFor="let pasta of pastasFiltradas"
-            [class.pasta-selecionada]="pasta.nome === pastaFavoritaSelecionada"
+            [class.pasta-selecionada]="pasta.nome === pastaSelecionada"
             (click)="selecionarPasta(pasta.nome)"
           >
             <span class="folder-icon" aria-hidden="true"></span>
@@ -135,6 +154,7 @@
         </div>
       </div>
 
+      <!-- CRIAR PASTA -->
       <div class="container-create-folder">
         <button
           type="button"

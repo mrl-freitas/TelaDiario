@@ -33,18 +33,18 @@ export const routes: Routes = [
       },
 
       {
-        path: 'movie-details',
-        loadComponent: () =>
-          import('../pages/movie-details/movie-details.page').then(
-            (m) => m.MovieDetailsPage,
-          ),
-      },
-
-      {
         path: 'movie-list/:type/:genreId',
         loadComponent: () =>
           import('../pages/movie-list/movie-list.page').then(
             (m) => m.MovieListPage,
+          ),
+      },
+
+      {
+        path: 'movie-details/:id',
+        loadComponent: () =>
+          import('../pages/movie-details/movie-details.page').then(
+            (m) => m.MovieDetailsPage,
           ),
       },
 

@@ -10,6 +10,7 @@
           type="email"
           placeholder="E-mail"
           class="login-field-input"
+          [(ngModel)]="email"
         ></ion-input>
       </ion-item>
 
@@ -19,6 +20,7 @@
           class="senha-field-input"
           type="password"
           placeholder="Senha"
+          [(ngModel)]="password"
           [type]="isPasswordVisibleA ? 'text' : 'password'"
         ></ion-input>
 
@@ -69,6 +71,7 @@
           class="senha-field-input"
           type="password"
           placeholder="Senha"
+          [(ngModel)]="confirmPassword"
           [type]="isPasswordVisibleB ? 'text' : 'password'"
         ></ion-input>
 
@@ -113,7 +116,9 @@
         </div>
       </ion-item>
 
-      <ion-button expand="block">CRIAR UMA CONTA</ion-button>
+      <ion-button expand="block" (click)="cadastrar()"
+        >CRIAR UMA CONTA</ion-button
+      >
     </div>
 
     <div class="signup-wrapper">

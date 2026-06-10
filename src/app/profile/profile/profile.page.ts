@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth';
 import {
   settingsOutline,
   starOutline,
@@ -28,12 +30,23 @@ import { IonContent, IonIcon, IonButton } from '@ionic/angular/standalone';
 })
 export class ProfilePage implements OnInit {
   isModalOpen = false;
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
     addIcons({
       'settings-outline': settingsOutline,
       'star-outline': starOutline,
       'chevron-forward-outline': chevronForwardOutline,
       'log-out-outline': logOutOutline,
+    });
+  }
+
+  async sair() {
+    await this.authService.logout();
+
+    this.router.navigateByUrl('/login', {
+      replaceUrl: true,
     });
   }
 

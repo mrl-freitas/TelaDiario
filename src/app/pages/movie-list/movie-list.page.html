@@ -48,8 +48,12 @@
               : 'assets/banners/Duna.webp'"
             [alt]="item.title || item.name"
           />
-
-          <span class="marcado-assistir" aria-label="Marcado para assistir">
+          <div class="watched-overlay" *ngIf="isWatched(item.id)"></div>
+          <span
+            class="marcado-assistir"
+            aria-label="Marcado para assistir"
+            *ngIf="isWatched(item.id)"
+          >
             &#10003;
           </span>
         </div>

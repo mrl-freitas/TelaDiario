@@ -4,7 +4,7 @@
     <div class="block"></div>
 
     <div class="content-wrapper">
-      <div class="back-button-svg-wrapper">
+      <div class="back-button-svg-wrapper" routerLink="/profile">
         <svg
           width="24"
           height="24"
@@ -14,7 +14,6 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          routerLink="/profile"
         >
           <path d="M15 18l-6-6 6-6" />
         </svg>
@@ -26,13 +25,19 @@
     </div>
     <div class="block"></div>
   </div>
+  <!-- Container voltar -->
 
+  <!-- Pasta -->
   <div class="container-favorites">
     <div class="block"></div>
 
     <div class="content-wrapper-favorites">
-      <div class="favorites" *ngFor="let folder of folders">
-        <span class="favorites-text">{{ folder }}</span>
+      <div
+        class="favorites"
+        *ngFor="let folder of folders"
+        (click)="abrirModalAcao(folder)"
+      >
+        <span class="favorites-text">{{ folder.nome }}</span>
       </div>
 
       <div class="more-movies" (click)="abrirModal()">
@@ -42,7 +47,9 @@
 
     <div class="block"></div>
   </div>
+  <!-- pasta -->
 
+  <!-- Modal -->
   <div class="custom-modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
     <div class="folder-modal-box" (click)="$event.stopPropagation()">
       <div class="input-container">
@@ -60,4 +67,35 @@
       <button class="btn-criar-pasta" (click)="criarPasta()">CRIAR</button>
     </div>
   </div>
+  <!-- Modal -->
+
+  <!-- Modal 2 -->
+  <div
+    class="custom-modal-overlay"
+    *ngIf="modalAcaoAberto"
+    (click)="fecharModalAcao()"
+  >
+    <div class="folder-actions-modal" (click)="$event.stopPropagation()">
+      <input
+        class="folder-name-input"
+        type="text"
+        [(ngModel)]="novoNome"
+        maxlength="20"
+        placeholder="Nome da pasta"
+      />
+
+      <button class="folder-action-btn rename-btn" (click)="renomearPasta()">
+        Renomear pasta
+      </button>
+
+      <button class="folder-action-btn delete-btn" (click)="apagarPasta()">
+        Excluir pasta
+      </button>
+
+      <button class="folder-action-btn cancel-btn" (click)="fecharModalAcao()">
+        Cancelar
+      </button>
+    </div>
+  </div>
+  <!-- Modal 2 -->
 </ion-content>

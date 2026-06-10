@@ -10,6 +10,7 @@
           type="email"
           placeholder="E-mail"
           class="login-field-input"
+          [(ngModel)]="email"
         ></ion-input>
       </ion-item>
 
@@ -19,6 +20,7 @@
           class="senha-field-input"
           type="password"
           placeholder="Senha"
+          [(ngModel)]="password"
           [type]="isPasswordVisible ? 'text' : 'password'"
         ></ion-input>
 
@@ -67,9 +69,7 @@
         </div>
       </ion-item>
 
-      <ion-button expand="block">INICIAR SESSÃO</ion-button>
-
-      <p routerLink="/home">Continuar como visitante</p>
+      <ion-button expand="block" (click)="login()">INICIAR SESSÃO</ion-button>
 
       <p routerLink="/forgot-password">Esqueceu a senha ?</p>
     </div>

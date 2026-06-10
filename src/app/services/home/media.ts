@@ -38,4 +38,15 @@ export class MediaApiService {
       },
     });
   }
+
+  getDetalhes(id: number, tipo: string) {
+    const endpoint = tipo === 'anime' ? 'tv' : tipo;
+
+    return this.http.get<any>(`${this.baseUrl}/${endpoint}/${id}`, {
+      params: {
+        api_key: this.apiKey,
+        language: 'pt-BR',
+      },
+    });
+  }
 }

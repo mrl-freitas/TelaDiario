@@ -118,3 +118,11 @@ ion-content::part(scroll)::-webkit-scrollbar {
   line-height: 1;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
 }
+
+.watched-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* equivalente ao “60% visual” */
+  border-radius: 8px; /* se seus cards tiverem borda */
+  z-index: 1;
+}

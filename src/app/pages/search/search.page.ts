@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, computed } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+
 import { SearchService } from '../../services/search/search';
 import { MediaApiService } from '../../services/search/media';
+import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
 
 @Component({
   selector: 'app-search',
@@ -17,22 +19,37 @@ import { MediaApiService } from '../../services/search/media';
 export class SearchPage implements OnInit {
   filmes: any[] = [];
 
+  // Injeção do serviço que usa Signals
+  private watchedService = inject(WatchedMoviesService);
+  private location = inject(Location);
+  private router = inject(Router);
+
+  // Signal computado para verificar se está assistido
+  // Transforma a lista do serviço em um Set para acesso rápido
+  watchedIds = computed(
+    () => new Set(this.watchedService.watched().map((m) => Number(m['id']))),
+  );
+
   constructor(
     private mediaApi: MediaApiService,
     private searchService: SearchService,
-    private location: Location,
-    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    // Não precisamos mais de carregarAssistidos() aqui,
+    // pois o serviço já é reativo através do Signal.
     this.carregarTudo();
+  }
+
+  // Verifica o estado assistido através do Signal computado
+  isWatched(id: number): boolean {
+    return this.watchedIds().has(Number(id));
   }
 
   // 🔎 Pesquisa filmes/séries/animes
   pesquisar(event: any): void {
     const valor = event.target.value?.trim();
 
-    // Se apagar pesquisa, volta conteúdo inicial
     if (!valor) {
       this.carregarTudo();
       return;
@@ -48,14 +65,13 @@ export class SearchPage implements OnInit {
           return possuiTitulo && possuiPoster && tipoValido;
         });
       },
-
-      error: (erro) => {
+      error: (erro: any) => {
         console.error('Erro na pesquisa TMDB:', erro);
       },
     });
   }
 
-  // 🎬 Carrega conteúdo inicial
+  // 🎬 Conteúdo inicial
   carregarTudo(): void {
     forkJoin({
       filmes: this.mediaApi.getFilmes(),
@@ -69,13 +85,11 @@ export class SearchPage implements OnInit {
             title: f.title,
             media_type: 'movie',
           })),
-
           ...res.series.results.map((s: any) => ({
             ...s,
             title: s.name,
             media_type: 'tv',
           })),
-
           ...res.animes.results.map((a: any) => ({
             ...a,
             title: a.name,
@@ -83,8 +97,7 @@ export class SearchPage implements OnInit {
           })),
         ].filter((item: any) => item.poster_path);
       },
-
-      error: (erro) => {
+      error: (erro: any) => {
         console.error('Erro ao carregar mídias:', erro);
       },
     });
@@ -94,9 +107,9 @@ export class SearchPage implements OnInit {
     this.location.back();
   }
 
-  abrirDetalhes(filme: any): void {
+  abrirDetalhes(item: any): void {
     this.router.navigate(['/movie-details'], {
-      state: { filme },
+      state: { filme: item },
     });
   }
 }

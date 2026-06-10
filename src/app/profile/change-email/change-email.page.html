@@ -35,21 +35,82 @@
       <ion-item class="current-email-field-container" fill="underline">
         <ion-input
           type="email"
+          labelPlacement="stacked"
+          [(ngModel)]="emailAtual"
           placeholder="E-mail atual"
+          labelPlacement="stacked"
           class="current-email-input"
         ></ion-input>
       </ion-item>
 
-      <!-- senha -->
+      <!-- novo email -->
       <ion-item class="new-email-field-container" fill="underline">
         <ion-input
           class="new-email-input"
-          type="password"
+          type="email"
           placeholder="E-mail novo"
+          [(ngModel)]="novoEmail"
         ></ion-input>
       </ion-item>
 
-      <ion-button expand="block"> MUDAR E-MAIL </ion-button>
+      <!-- senha -->
+      <ion-item class="senha-field-container" fill="underline">
+        <ion-input
+          class="senha-field-input"
+          type="password"
+          placeholder="Senha"
+          [(ngModel)]="senha"
+          [type]="isPasswordVisible ? 'text' : 'password'"
+        ></ion-input>
+
+        <div class="eye-icon-container" (click)="togglePassword()">
+          @if (isPasswordVisible) {
+          <!-- Ícone: Olho Aberto (True) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="eye-svg"
+          >
+            <!-- Contorno externo do olho -->
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <!-- Círculo da íris -->
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          } @else {
+          <!-- Ícone: Olho Riscado (False) -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="eye-svg"
+          >
+            <!-- Contorno do olho -->
+            <path
+              d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"
+            />
+
+            <!-- Círculo central (íris) cortado -->
+            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+
+            <!-- O risco (linha diagonal) -->
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+          }
+        </div>
+      </ion-item>
+
+      <ion-button expand="block" (click)="alterarEmail()">
+        MUDAR E-MAIL
+      </ion-button>
     </div>
 
     <div class="block"></div>

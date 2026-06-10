@@ -189,7 +189,8 @@ ion-content {
 .content-folders-list {
   display: grid;
   gap: 12px;
-  min-height: 126px;
+  max-height: 126px;
+  overflow-y: scroll;
 }
 
 .folder-item {

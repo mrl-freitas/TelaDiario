@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MovieGenres } from '../../services/movie-genres/movie-genres';
 import { SeriesGenres } from '../../services/series-genres/series-genres';
 import { AnimesGenres } from '../../services/animes-genres/animes-genres';
+import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
 
 type MediaType = 'movie' | 'tv' | 'anime';
 
@@ -21,7 +22,15 @@ export class MovieListPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  // Injetando o serviço de assistidos (que usa Signals)
+  private watchedService = inject(WatchedMoviesService);
+
   items: any[] = [];
+
+  // Criamos um Signal computado que transforma a lista do serviço em um Set para performance
+  watchedIds = computed(
+    () => new Set(this.watchedService.watched().map((m) => Number(m['id']))),
+  );
 
   private type!: MediaType;
   private genreId!: number;
@@ -37,7 +46,11 @@ export class MovieListPage implements OnInit {
     this.loadData();
   }
 
-  // 📌 Lê parâmetros da rota
+  // Agora basta chamar o método do serviço diretamente
+  isWatched(id: number): boolean {
+    return this.watchedIds().has(Number(id));
+  }
+
   private readParams(): void {
     const typeParam = this.route.snapshot.paramMap.get('type');
     const genreParam = this.route.snapshot.paramMap.get('genreId');
@@ -46,7 +59,6 @@ export class MovieListPage implements OnInit {
     this.genreId = Number(genreParam);
   }
 
-  // 📌 Carrega dados por tipo
   private loadData(): void {
     const requestMap: Record<MediaType, any> = {
       movie: this.movieService.getByGenre(this.genreId),
@@ -61,26 +73,18 @@ export class MovieListPage implements OnInit {
     });
   }
 
-  // 🔙 Voltar para tela correta
   voltar(): void {
     const routeMap: Record<MediaType, string> = {
       movie: '/movie-genres',
       tv: '/series-genres',
       anime: '/anime-genres',
     };
-
     this.router.navigate([routeMap[this.type]]);
   }
 
-  // 🎬 Abrir detalhes (MESMO PADRÃO DA HOME)
   abrirDetalhes(item: any): void {
     this.router.navigate(['/movie-details'], {
       state: { filme: item },
     });
-  }
-
-  // 📌 placeholder
-  estaAssistido(item: any): boolean {
-    return false;
   }
 }
