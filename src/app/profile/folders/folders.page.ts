@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { FolderService } from '../../services/folder/folder';
 import { Folder } from '../../models/folder/folder.model';
 
@@ -15,6 +15,7 @@ import { Folder } from '../../models/folder/folder.model';
 })
 export class FavoritesPage implements OnInit {
   private readonly folderService = inject(FolderService);
+  private router = inject(Router);
 
   // =========================
   // 📦 STATE
@@ -36,6 +37,19 @@ export class FavoritesPage implements OnInit {
   // =========================
   ngOnInit(): void {
     this.carregarPastas();
+  }
+
+  // =========================
+  // Acessar pasta
+  // =========================
+  acessarPasta(): void {
+    if (!this.pastaSelecionada) {
+      return;
+    }
+
+    this.router.navigate(['/folder-details', this.pastaSelecionada.id]);
+
+    this.fecharModalAcao();
   }
 
   // =========================

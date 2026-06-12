@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  inject,
-  Injector,
-  runInInjectionContext,
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, authState } from '@angular/fire/auth';
 import {
   Firestore,
@@ -13,11 +8,10 @@ import {
   setDoc,
   deleteDoc,
   getDoc,
-  getDocs,
 } from '@angular/fire/firestore';
 
 import { firstValueFrom } from 'rxjs';
-import { switchMap, of, map } from 'rxjs';
+import { switchMap, of } from 'rxjs';
 
 type FirebaseUser = { uid: string } | null;
 
@@ -27,15 +21,14 @@ type FirebaseUser = { uid: string } | null;
 export class FolderMediaService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
-  private injector = inject(Injector);
+
+  private user$ = authState(this.auth);
 
   // =========================
-  // 👤 USER (SEM WARNING)
+  // 👤 USER
   // =========================
   private async getUser(): Promise<FirebaseUser> {
-    return runInInjectionContext(this.injector, async () => {
-      return await firstValueFrom(authState(this.auth));
-    });
+    return await firstValueFrom(this.user$);
   }
 
   // =========================
@@ -58,14 +51,12 @@ export class FolderMediaService {
     const user = await this.getUser();
     if (!user) return;
 
-    return runInInjectionContext(this.injector, async () => {
-      const ref = doc(
-        this.firestore,
-        `users/${user.uid}/folders/${folderId}/media/${media.id}`,
-      );
+    const ref = doc(
+      this.firestore,
+      `users/${user.uid}/folders/${folderId}/media/${media.id}`,
+    );
 
-      return setDoc(ref, this.normalize(media));
-    });
+    return setDoc(ref, this.normalize(media));
   }
 
   // =========================
@@ -75,34 +66,30 @@ export class FolderMediaService {
     const user = await this.getUser();
     if (!user) return;
 
-    return runInInjectionContext(this.injector, async () => {
-      const ref = doc(
-        this.firestore,
-        `users/${user.uid}/folders/${folderId}/media/${mediaId}`,
-      );
+    const ref = doc(
+      this.firestore,
+      `users/${user.uid}/folders/${folderId}/media/${mediaId}`,
+    );
 
-      return deleteDoc(ref);
-    });
+    return deleteDoc(ref);
   }
 
   // =========================
   // 📄 LIST MEDIA (REACTIVO)
   // =========================
   listarMidias(folderId: string) {
-    return runInInjectionContext(this.injector, () => {
-      return authState(this.auth).pipe(
-        switchMap((user: any) => {
-          if (!user) return of([]);
+    return this.user$.pipe(
+      switchMap((user: any) => {
+        if (!user) return of([]);
 
-          const ref = collection(
-            this.firestore,
-            `users/${user.uid}/folders/${folderId}/media`,
-          );
+        const ref = collection(
+          this.firestore,
+          `users/${user.uid}/folders/${folderId}/media`,
+        );
 
-          return collectionData(ref, { idField: 'id' });
-        }),
-      );
-    });
+        return collectionData(ref, { idField: 'id' });
+      }),
+    );
   }
 
   // =========================
@@ -112,15 +99,13 @@ export class FolderMediaService {
     const user = await this.getUser();
     if (!user) return false;
 
-    return runInInjectionContext(this.injector, async () => {
-      const ref = doc(
-        this.firestore,
-        `users/${user.uid}/folders/${folderId}/media/${mediaId}`,
-      );
+    const ref = doc(
+      this.firestore,
+      `users/${user.uid}/folders/${folderId}/media/${mediaId}`,
+    );
 
-      const snap = await getDoc(ref);
-      return snap.exists();
-    });
+    const snap = await getDoc(ref);
+    return snap.exists();
   }
 
   // =========================
@@ -135,31 +120,31 @@ export class FolderMediaService {
   }
 
   // =========================
-  // ❤️ GLOBAL CHECK
+  // ❤️ GLOBAL CHECK (CORRIGIDO)
   // =========================
   async isFavoriteGlobal(mediaId: number) {
     const user = await this.getUser();
     if (!user) return false;
 
-    return runInInjectionContext(this.injector, async () => {
-      const foldersRef = collection(
+    const foldersRef = collection(this.firestore, `users/${user.uid}/folders`);
+
+    const foldersSnap = await firstValueFrom(
+      collectionData(foldersRef, { idField: 'id' }),
+    );
+
+    for (const folder of foldersSnap as any[]) {
+      const ref = doc(
         this.firestore,
-        `users/${user.uid}/folders`,
+        `users/${user.uid}/folders/${folder.id}/media/${mediaId}`,
       );
 
-      const snapshot = await getDocs(foldersRef);
+      const snap = await getDoc(ref);
 
-      for (const folderDoc of snapshot.docs) {
-        const ref = doc(
-          this.firestore,
-          `users/${user.uid}/folders/${folderDoc.id}/media/${mediaId}`,
-        );
-
-        const snap = await getDoc(ref);
-        if (snap.exists()) return true;
+      if (snap.exists()) {
+        return true;
       }
+    }
 
-      return false;
-    });
+    return false;
   }
 }

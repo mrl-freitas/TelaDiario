@@ -47,6 +47,7 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
   seletorPastasAberto = false;
   buscaPasta = '';
   pastaSelecionada = '';
+  mensagemAlerta: string = '';
 
   // =========================
   // INIT
@@ -76,27 +77,44 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
   init(): void {
     const id = this.route.snapshot.paramMap.get('id');
     const tipo = history.state?.tipo || 'movie';
+    const titulo = history.state?.titulo;
 
     if (!id) return;
 
     this.filmeId = Number(id);
-    this.loadMovie(this.filmeId, tipo);
+    this.loadMovie(this.filmeId, tipo, titulo);
   }
 
-  loadMovie(id: number, tipo: string): void {
+  loadMovie(id: number, tipo: string, tituloEsperado?: string): void {
     this.mediaApi
       .getDetalhes(id, tipo)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
+          const tituloCarregado = data.title || data.name;
+
+          if (
+            tipo === 'movie' &&
+            tituloEsperado &&
+            !this.titulosIguais(tituloCarregado, tituloEsperado)
+          ) {
+            this.loadMovie(id, 'tv');
+            return;
+          }
+
           this.filme = {
             ...data,
-            title: data.title || data.name,
+            title: tituloCarregado,
+            media_type: tipo,
           };
 
           this.syncFavoriteState();
         },
       });
+  }
+
+  private titulosIguais(a?: string, b?: string): boolean {
+    return (a ?? '').trim().toLowerCase() === (b ?? '').trim().toLowerCase();
   }
 
   // =========================
@@ -116,25 +134,24 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
   }
 
   // =========================
-  // ❤️ FAVORITO (CORE FIX)
+  // FAVORITO
   // =========================
   async syncFavoriteState(): Promise<void> {
-    if (!this.filme?.id || !this.favoritesFolderId) return;
+    if (!this.filme?.id) return;
 
-    this.isFavorite = await this.folderMediaService.mediaExiste(
-      this.favoritesFolderId,
+    const favorito = await this.folderMediaService.isFavoriteGlobal(
       this.filme.id,
     );
+
+    this.isFavorite = favorito;
   }
 
   async toggleFavorite(): Promise<void> {
     if (!this.filme) return;
 
-    // UI otimista (instantâneo)
     this.isFavorite = !this.isFavorite;
 
     try {
-      // garante pasta existe
       if (!this.favoritesFolderId) {
         const fav = this.pastas.find((p) => p.nome === 'favorites');
         this.favoritesFolderId = fav?.id ?? null;
@@ -149,17 +166,37 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
 
       await this.syncFavoriteState();
     } catch (e) {
-      // rollback seguro
       this.isFavorite = !this.isFavorite;
       console.error(e);
     }
   }
 
   // =========================
-  // PASTAS (MODAL)
+  // MODAL PASTAS
   // =========================
-  abrirSeletorPastas(): void {
+  async abrirSeletorPastas(): Promise<void> {
     this.seletorPastasAberto = true;
+
+    this.pastasDoFilme.clear();
+
+    if (!this.filme) {
+      return;
+    }
+
+    for (const pasta of this.pastas) {
+      const existe = await this.folderMediaService.mediaExiste(
+        pasta.id,
+        this.filme.id,
+      );
+
+      if (existe) {
+        this.pastasDoFilme.add(pasta.id);
+      }
+    }
+  }
+
+  filmeEstaNaPasta(folderId: string): boolean {
+    return this.pastasDoFilme.has(folderId);
   }
 
   fecharSeletorPastas(): void {
@@ -167,15 +204,50 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
     this.buscaPasta = '';
   }
 
-  async selecionarPasta(nome: string): Promise<void> {
-    const pasta = this.pastas.find((p) => p.nome === nome);
-    if (!pasta || !this.filme) return;
-
+  selecionarPasta(nome: string): void {
     this.pastaSelecionada = nome;
+  }
 
-    await this.folderMediaService.toggleMedia(pasta.id, this.filme);
+  pastasDoFilme = new Set<string>();
 
-    this.fecharSeletorPastas();
+  async adicionarFilmeNaPasta(): Promise<void> {
+    if (!this.filme || !this.pastaSelecionada) {
+      return;
+    }
+
+    const pasta = this.pastas.find((p) => p.nome === this.pastaSelecionada);
+
+    if (!pasta) {
+      return;
+    }
+
+    try {
+      const existe = await this.folderMediaService.mediaExiste(
+        pasta.id,
+        this.filme.id,
+      );
+
+      if (existe) {
+        return;
+      }
+
+      // 🚨 REGRA DE BLOQUEIO (apenas impede escrita)
+      if (this.isAssistido) {
+        console.warn('Filme assistido não pode ser adicionado.');
+
+        // 🔥 importante: ainda mantém estado visual correto
+        await this.syncFavoriteState();
+        return;
+      }
+
+      await this.folderMediaService.adicionarMedia(pasta.id, this.filme);
+
+      this.pastasDoFilme.add(pasta.id);
+
+      await this.syncFavoriteState();
+    } catch (error) {
+      console.error('Erro ao adicionar filme:', error);
+    }
   }
 
   async criarPasta(): Promise<void> {
@@ -183,6 +255,7 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
     if (!nome) return;
 
     const exists = this.pastas.some((p) => p.nome.toLowerCase() === nome);
+
     if (exists) return;
 
     await this.folderService.criarPasta(nome);
@@ -191,12 +264,49 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
     this.loadFolders();
   }
 
+  async removerFilmeDaPasta(): Promise<void> {
+    if (!this.filme || !this.pastaSelecionada) {
+      return;
+    }
+
+    const pasta = this.pastas.find((p) => p.nome === this.pastaSelecionada);
+
+    if (!pasta) {
+      return;
+    }
+
+    try {
+      const existe = await this.folderMediaService.mediaExiste(
+        pasta.id,
+        this.filme.id,
+      );
+
+      if (!existe) {
+        return;
+      }
+
+      await this.folderMediaService.removerMedia(pasta.id, this.filme.id);
+
+      // Remove a borda verde
+      this.pastasDoFilme.delete(pasta.id);
+
+      // Limpa a seleção atual
+      this.pastaSelecionada = '';
+
+      // Atualiza o coração
+      await this.syncFavoriteState();
+    } catch (error) {
+      console.error('Erro ao remover filme:', error);
+    }
+  }
+
   atualizarBuscaPasta(e: Event): void {
     this.buscaPasta = (e.target as HTMLInputElement).value;
   }
 
   get pastasFiltradas(): Pasta[] {
     const q = this.buscaPasta.trim().toLowerCase();
+
     if (!q) return this.pastas;
 
     return this.pastas.filter((p) => p.nome.toLowerCase().includes(q));
@@ -211,7 +321,18 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
   }
 
   async toggleAssistido(): Promise<void> {
-    if (!this.filme) return;
+    if (!this.filme) {
+      return;
+    }
+
+    // Se o filme estiver favoritado, não permite marcar como assistido
+    if (this.isFavorite) {
+      console.warn(
+        'Remova o filme das pastas antes de marcá-lo como assistido.',
+      );
+      return;
+    }
+
     await this.watchedService.toggle(this.filme);
   }
 

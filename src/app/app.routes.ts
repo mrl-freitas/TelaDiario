@@ -88,7 +88,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'folder-details',
+    path: 'folder-details/:id',
     loadComponent: () =>
       import('./profile/folder-details/folder-details.page').then(
         (m) => m.FolderDetailsPage,

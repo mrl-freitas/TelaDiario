@@ -4,7 +4,7 @@
     <div class="block"></div>
 
     <div class="content-wrapper">
-      <div class="back-button-svg-wrapper">
+      <div class="back-button-svg-wrapper" routerLink="/folders">
         <svg
           width="24"
           height="24"
@@ -31,28 +31,16 @@
     <div class="block"></div>
 
     <div class="content-card">
-      <div class="cartao-filme">
-        <div class="poster-container">
-          <img class="poster-filme" src="/assets/animes/demon.webp" alt="" />
+      <div
+        class="item-card"
+        *ngFor="let filme of filmes"
+        (click)="abrirDetalhes(filme)"
+      >
+        <div class="item-cover">
+          <img class="item-img" [src]="getImagem(filme)" [alt]="filme.titulo" />
         </div>
 
-        <h3>Título do Filme</h3>
-      </div>
-
-      <div class="cartao-filme">
-        <div class="poster-container">
-          <img class="poster-filme" src="/assets/animes/frieren.webp" alt="" />
-        </div>
-
-        <h3>Título do Filme</h3>
-      </div>
-
-      <div class="cartao-filme">
-        <div class="poster-container">
-          <img class="poster-filme" src="/assets/animes/jujutsu.webp" alt="" />
-        </div>
-
-        <h3>Título do Filme</h3>
+        <h3 class="item-name">{{ filme.titulo }}</h3>
       </div>
     </div>
 

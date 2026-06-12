@@ -58,7 +58,7 @@
               width="28"
               height="28"
               [attr.fill]="isFavorite ? '#ffffff' : 'none'"
-              [style.stroke]="isAssistido ? '#ffffff' : '#B2B2B2'"
+              [style.stroke]="isFavorite ? '#ffffff' : '#B2B2B2'"
               stroke-width="1"
             >
               <path
@@ -79,6 +79,8 @@
         {{ sinopseExpandida ? 'Ver menos' : 'Ver mais' }}
       </button>
     </div>
+
+    <div class="alerta-filme" *ngIf="mensagemAlerta">{{ mensagemAlerta }}</div>
   </section>
 
   <!-- LOADING -->
@@ -145,6 +147,7 @@
             type="button"
             class="folder-item"
             *ngFor="let pasta of pastasFiltradas"
+            [class.pasta-com-filme]="filmeEstaNaPasta(pasta.id)"
             [class.pasta-selecionada]="pasta.nome === pastaSelecionada"
             (click)="selecionarPasta(pasta.nome)"
           >
@@ -159,9 +162,18 @@
         <button
           type="button"
           class="button-create-folder"
-          (click)="criarPasta()"
+          [disabled]="!pastaSelecionada"
+          (click)="adicionarFilmeNaPasta()"
         >
-          CRIAR
+          ADICIONAR À PASTA
+        </button>
+
+        <button
+          type="button"
+          class="button-remove-folder"
+          (click)="removerFilmeDaPasta()"
+        >
+          REMOVER DA PASTA
         </button>
       </div>
     </section>

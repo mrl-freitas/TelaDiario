@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-
 import { SearchService } from '../../services/search/search';
 import { MediaApiService } from '../../services/search/media';
 import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
+import { MediaType } from 'src/app/models/home/media-item';
 
 @Component({
   selector: 'app-search',
@@ -26,9 +26,15 @@ export class SearchPage implements OnInit {
 
   // Signal computado para verificar se está assistido
   // Transforma a lista do serviço em um Set para acesso rápido
-  watchedIds = computed(
-    () => new Set(this.watchedService.watched().map((m) => Number(m['id']))),
-  );
+  watchedIds = computed(() => {
+    const set = new Set<number>();
+
+    for (const m of this.watchedService.watched() as any[]) {
+      set.add(Number(m.movieId));
+    }
+
+    return set;
+  });
 
   constructor(
     private mediaApi: MediaApiService,
@@ -107,9 +113,9 @@ export class SearchPage implements OnInit {
     this.location.back();
   }
 
-  abrirDetalhes(item: any): void {
-    this.router.navigate(['/movie-details'], {
-      state: { filme: item },
+  abrirDetalhes(item: MediaType) {
+    this.router.navigate(['/movie-details', item.id], {
+      state: { tipo: item.media_type },
     });
   }
 }

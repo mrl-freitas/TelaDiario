@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-
 import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
 import { MediaApiService } from 'src/app/services/home/media';
 import { MediaType } from 'src/app/models/home/media-item';

@@ -3,13 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { MovieGenres } from '../../services/movie-genres/movie-genres';
 import { SeriesGenres } from '../../services/series-genres/series-genres';
 import { AnimesGenres } from '../../services/animes-genres/animes-genres';
 import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
 
 type MediaType = 'movie' | 'tv' | 'anime';
+
+interface MediaItem {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path?: string;
+  media_type: MediaType;
+}
 
 @Component({
   selector: 'app-movie-list',
@@ -29,7 +36,8 @@ export class MovieListPage implements OnInit {
 
   // Criamos um Signal computado que transforma a lista do serviço em um Set para performance
   watchedIds = computed(
-    () => new Set(this.watchedService.watched().map((m) => Number(m['id']))),
+    () =>
+      new Set(this.watchedService.watched().map((m) => Number(m['movieId']))),
   );
 
   private type!: MediaType;
@@ -82,9 +90,9 @@ export class MovieListPage implements OnInit {
     this.router.navigate([routeMap[this.type]]);
   }
 
-  abrirDetalhes(item: any): void {
-    this.router.navigate(['/movie-details'], {
-      state: { filme: item },
+  abrirDetalhes(item: MediaItem) {
+    this.router.navigate(['/movie-details', item.id], {
+      state: { tipo: this.type },
     });
   }
 }

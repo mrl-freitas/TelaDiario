@@ -46,14 +46,14 @@
 
     <div class="content-card">
       <div
-        class="cartao-filme"
+        class="item-card"
         *ngFor="let item of filmes"
         role="button"
         tabindex="0"
         (click)="abrirDetalhes(item)"
         (keydown.enter)="abrirDetalhes(item)"
       >
-        <div class="poster-container">
+        <div class="item-cover">
           <img
             class="poster-filme"
             [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w500' + item.poster_path : 'assets/banners/Duna.webp'"
@@ -71,7 +71,7 @@
           </span>
         </div>
 
-        <h3>{{ item.title || item.name }}</h3>
+        <h3 class="item-name">{{ item.title || item.name }}</h3>
       </div>
     </div>
 
