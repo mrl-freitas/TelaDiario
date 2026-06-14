@@ -42,6 +42,36 @@
   </div>
   <!-- Container dos Slides -->
 
+  <section class="shake-discover" aria-live="polite">
+    <div class="shake-discover-header">
+      <p>Chacoalhe para descobrir</p>
+      <span>Balance o celular e receba uma sugestão surpresa.</span>
+    </div>
+
+    @if (isDiscovering()) {
+    <div class="shake-loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Sorteando filme...</span>
+    </div>
+    } @else if (randomMovie(); as movie) {
+    <button class="shake-result" type="button" (click)="abrirDetalhes(movie)">
+      <img
+        [src]="movie.imagem"
+        [alt]="movie.titulo"
+        draggable="false"
+      />
+      <span>
+        <small>Filme sorteado</small>
+        {{ movie.titulo }}
+      </span>
+    </button>
+    } @else {
+    <div class="shake-empty">
+      <span>Pronto para sortear seu próximo filme.</span>
+    </div>
+    }
+  </section>
+
   <!-- Container -->
   <div class="container-category">
     <!-- Filmes  -->
@@ -183,5 +213,4 @@
     </div>
   </div>
   <!-- Container dos Filmes -->
-  ></ion-content
->
+</ion-content>

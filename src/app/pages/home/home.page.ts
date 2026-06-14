@@ -1,18 +1,26 @@
 import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonSpinner,
+  ToastController,
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { WatchedMoviesService } from '../../services/watched-movies/watched-movies';
 import { MediaApiService } from 'src/app/services/home/media';
 import { MediaType } from 'src/app/models/home/media-item';
+import { ShakeDetectorService } from 'src/app/services/shake/shake-detector';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule],
+  imports: [IonContent, IonSpinner, CommonModule, FormsModule],
 })
 export class HomePage implements OnInit, OnDestroy {
   // =========================
@@ -20,9 +28,13 @@ export class HomePage implements OnInit, OnDestroy {
   // =========================
   private mediaApi = inject(MediaApiService);
   private watchedService = inject(WatchedMoviesService);
+  private shakeDetector = inject(ShakeDetectorService);
+  private toastCtrl = inject(ToastController);
   private router = inject(Router);
 
   private imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+  private shakeSubscription?: Subscription;
+  private discoverSubscription?: Subscription;
 
   // =========================
   // LISTAS
@@ -30,6 +42,8 @@ export class HomePage implements OnInit, OnDestroy {
   filmes = signal<MediaType[]>([]);
   series = signal<MediaType[]>([]);
   animes = signal<MediaType[]>([]);
+  randomMovie = signal<MediaType | null>(null);
+  isDiscovering = signal(false);
 
   // =========================
   // BANNER
@@ -57,10 +71,14 @@ export class HomePage implements OnInit, OnDestroy {
     this.carregarFilmes();
     this.carregarSeries();
     this.carregarAnimes();
+    this.startShakeToDiscover();
   }
 
   ngOnDestroy() {
     if (this.slideInterval) clearInterval(this.slideInterval);
+    this.shakeSubscription?.unsubscribe();
+    this.discoverSubscription?.unsubscribe();
+    void this.shakeDetector.stop();
   }
 
   // =========================
@@ -104,6 +122,60 @@ export class HomePage implements OnInit, OnDestroy {
     this.mediaApi.getAnimes().subscribe((res) => {
       this.animes.set(this.mapMedia(res.results, 'anime'));
     });
+  }
+
+  private startShakeToDiscover(): void {
+    this.shakeSubscription = this.shakeDetector.shake$.subscribe(() => {
+      this.discoverRandomMovie();
+    });
+
+    void this.shakeDetector
+      .start({
+        threshold: 18,
+        cooldownMs: 2000,
+      })
+      .catch((error) => this.handleShakeStartError(error));
+  }
+
+  private discoverRandomMovie(): void {
+    if (this.isDiscovering()) {
+      return;
+    }
+
+    this.isDiscovering.set(true);
+
+    // Haptics pode nao estar disponivel no navegador; a falha nao deve interromper o sorteio.
+    void Haptics.impact({ style: ImpactStyle.Medium }).catch((error) => {
+      console.warn('Feedback haptico indisponivel:', error);
+    });
+
+    this.discoverSubscription = this.mediaApi
+      .getRandomMovie()
+      .pipe(finalize(() => this.isDiscovering.set(false)))
+      .subscribe({
+        next: (movie) => {
+          this.randomMovie.set(movie);
+        },
+        error: (error: unknown) => {
+          this.handleDiscoverError(error);
+        },
+      });
+  }
+
+  private handleShakeStartError(error: unknown): void {
+    console.error('Erro ao iniciar sensor de movimento:', error);
+  }
+
+  private async handleDiscoverError(error: unknown): Promise<void> {
+    console.error('Erro ao sortear filme:', error);
+
+    const toast = await this.toastCtrl.create({
+      message: 'Nao foi possivel sortear um filme agora. Tente novamente.',
+      duration: 2500,
+      color: 'danger',
+    });
+
+    await toast.present();
   }
 
   private mapMedia(list: any[], type: string): MediaType[] {
