@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { Capacitor } from '@capacitor/core'; // <--- 1. Importe o Capacitor
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,29 @@ import { Capacitor } from '@capacitor/core'; // <--- 1. Importe o Capacitor
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor() {
-    this.initializeApp();
-  }
+  constructor(private router: Router) {
+    App.addListener('appUrlOpen', (event) => {
+      console.log('URL recebida:', event.url);
 
-  async initializeApp() {
-    // 2. Proteja o código com o if
-    if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({
-        style: Style.Light,
-      });
-    }
+      try {
+        const url = new URL(event.url);
+
+        const mode = url.searchParams.get('mode');
+        const oobCode = url.searchParams.get('oobCode');
+
+        console.log('mode:', mode);
+        console.log('oobCode:', oobCode);
+
+        if (mode === 'resetPassword' && oobCode) {
+          this.router.navigate(['/reset-password'], {
+            queryParams: {
+              code: oobCode,
+            },
+          });
+        }
+      } catch (error) {
+        console.error('Erro ao processar Deep Link:', error);
+      }
+    });
   }
 }

@@ -9,20 +9,15 @@ import {
   IonItem,
 } from '@ionic/angular/standalone';
 
-// --- IMPORTAÇÕES DO FIREBASE CONFIGURADAS ---
-import { initializeApp, getApps, getApp } from 'firebase/app';
+// Firebase
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
-
-// COLE AQUI AS SUAS CREDENCIAIS DO FIREBASE
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY_AQUI",
-  authDomain: "SEU_AUTH_DOMAIN_AQUI",
-  projectId: "SEU_PROJECT_ID_AQUI",
-  storageBucket: "SEU_STORAGE_BUCKET_AQUI",
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID_AQUI",
-  appId: "SUA_APP_ID_AQUI"
-};
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 
 @Component({
   selector: 'app-forgot-password',
@@ -40,7 +35,6 @@ const firebaseConfig = {
   ],
 })
 export class ForgotPasswordPage implements OnInit {
-
   email: string = '';
   mensagemStatus: string = '';
   statusSucesso: boolean = false;
@@ -55,36 +49,35 @@ export class ForgotPasswordPage implements OnInit {
 
     if (this.email.trim() === '') {
       this.mensagemStatus = 'Por favor, informe seu e-mail.';
-      this.statusSucesso = false;
       return;
     }
 
     const emailDigitado = this.email.trim().toLowerCase();
 
     try {
-      let app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-      const db = getFirestore(app);
-      const auth = getAuth(app);
+      const db = getFirestore();
+      const auth = getAuth();
 
       const usuariosRef = collection(db, 'users');
       const q = query(usuariosRef, where('email', '==', emailDigitado));
       const querySnapshot = await getDocs(q);
 
-      // VERIFICAÇÃO RÍGIDA: Se o e-mail não existir na coleção do Firestore, barra aqui!
+      // Verifica se o e-mail existe na coleção users
       if (querySnapshot.empty) {
         this.mensagemStatus = 'E-mail não cadastrado no sistema.';
         this.statusSucesso = false;
         return;
       }
 
-      // Se o documento existe, dispara o e-mail com segurança
+      // Envia o e-mail de redefinição
       await sendPasswordResetEmail(auth, emailDigitado);
+
       this.mensagemStatus = 'Link de redefinição enviado!';
       this.statusSucesso = true;
       this.email = '';
-
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erro completo na execução:', error);
+
       this.mensagemStatus = 'Erro ao processar. Tente novamente.';
       this.statusSucesso = false;
     }
