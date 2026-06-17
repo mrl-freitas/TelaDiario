@@ -93,5 +93,9 @@ export const routes: Routes = [
       import('./profile/folder-details/folder-details.page').then(
         (m) => m.FolderDetailsPage,
       ),
+  },  {
+    path: 'group',
+    loadComponent: () => import('./group/group/group.page').then( m => m.GroupPage)
   },
+
 ];

@@ -10,6 +10,7 @@ import {
   starOutline,
   chevronForwardOutline,
   logOutOutline,
+  peopleOutline,
 } from 'ionicons/icons';
 import { IonContent, IonIcon, IonButton } from '@ionic/angular/standalone';
 
@@ -35,6 +36,7 @@ export class ProfilePage implements OnInit {
     private router: Router,
   ) {
     addIcons({
+      'people-outline': peopleOutline,
       'settings-outline': settingsOutline,
       'star-outline': starOutline,
       'chevron-forward-outline': chevronForwardOutline,
